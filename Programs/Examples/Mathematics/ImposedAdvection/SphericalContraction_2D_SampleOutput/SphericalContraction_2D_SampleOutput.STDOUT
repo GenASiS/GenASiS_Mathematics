@@ -1,0 +1,2039 @@
+     INFO_1: Initializing a Communicator
+                               Name  =  World
+                               Size  =         4
+     INFO_1: Parameter Verbosity found
+                             Source  =  command line
+                          Verbosity  =  INFO_2
+     INFO_1: Modifying CONSOLE
+                          Verbosity  =  INFO_2
+     INFO_1: Parameter DisplayRank not found
+                             Source  =  command line
+     INFO_1: Modifying CONSOLE
+                        DisplayRank  =         0
+     INFO_1: OpenMP environment
+                         MaxThreads  =         1
+                           nDevices  =         1
+                     OffloadEnabled  =   TRUE
+                    Selected device  =         0
+                           Schedule  =  static
+                          ChunkSize  =         1
+     INFO_1: Parameter Dimensionality found
+                             Source  =  command line
+                     Dimensionality  =  2D
+     INFO_1: Opening a parameter file
+                               Name  =  SphericalContraction_VLC_2D_Program_Parameters
+     INFO_1: "../../../../../Modules/Basics/FileSystem/FileSystemBasics/ParameterStream_Form.f90", line 106: 1525-006 The STATUS= specifier in the OPEN statement for unit -3 cannot be set to OLD because the file ../Parameters/SphericalContraction_VLC_2D_Program_Parameters does not exist.  The program will stop.
+
+     INFO_1: Setting Timer parameters
+                           LevelMin  =         2
+                           LevelMax  =        10
+                    DisplayFraction  =  1.000000E-001
+     INFO_1: Starting the Program
+                               Name  =  SphericalContraction_VLC_2D
+     INFO_1: Initializing an ImposedAdvection_VL
+     INFO_1: Initializing an Atlas_SCG_CC
+                               Name  =  X
+     INFO_1: Initializing a Chart_GS_CC
+                               Name  =  X
+   WARNING: nBricksCompatible in each dimension must divide evenly into nCells in each dimension
+                         iDimension  =         1
+                  nBricksCompatible  =         4
+                   nCells requested  =       313
+                     nCells granted  =       312
+                         subroutine  =  SetDecomposition
+                             module  =  Chart_GS__Form
+     INFO_1: Initializing a Geometry_F
+                               Name  =  Geometry
+     INFO_1: Initializing a CurrentSet
+                               Name  =  Currents
+     INFO_1: Initializing an Integrator_CS
+                               Name  =  Integrator
+     INFO_1: Initializing a GridImageStream
+                               Name  =  SphericalContraction_VLC_2D
+                   WorkingDirectory  =  ../SphericalContraction_2D_SampleOutput/
+     INFO_1: Initializing a Stream
+                               Name  =  Stream_X
+       INFO_2: Adding a FieldSet to a Stream
+                             Stream  =  Stream_X
+                           FieldSet  =  Geometry
+       INFO_2: Initializing a FieldSet
+                               Name  =  Balanced
+       INFO_2: Initializing a FieldSet
+                               Name  =  Intermediate
+       INFO_2: Initializing a FieldSet
+                               Name  =  Solution
+     INFO_1: Initializing a DivergencePart_CS
+                               Name  =  V
+       INFO_2: Initializing a FieldSet
+                               Name  =  Currents_Prmtv
+       INFO_2: Initializing a FieldSet
+                               Name  =  Currents_IL
+       INFO_2: Initializing a FieldSet
+                               Name  =  Currents_IR
+     INFO_1: InitializeAssociating a Reconstruction
+                               Name  =  Currents_Prmtv_Rcnstrctn
+       INFO_2: Initializing a FieldSet
+                               Name  =  F_Currents
+       INFO_2: Initializing a FieldSet
+                               Name  =  F_IL_Currents
+       INFO_2: Initializing a FieldSet
+                               Name  =  F_IR_Currents
+       INFO_2: Initializing an EigenspeedSet_F
+                               Name  =  Currents_IL_Egnspd
+       INFO_2: Initializing an EigenspeedSet_F
+                               Name  =  Currents_IR_Egnspd
+     INFO_1: Initializing a RiemannSolver_HLL
+                               Name  =  Currents_RmnnSlvr
+     INFO_1: Initializing a Step_RK_CS
+                               Name  =  Currents_Stp
+     INFO_1: Initializing a Slope_DFV_F_DT
+                               Name  =  Currents_Slp_DFV_F_DT
+       INFO_2: Initializing a Slope_DFV_PD
+                               Name  =  Currents_Slp_DFV_PD_V
+       INFO_2: Initializing a Slope_DFV_C_F
+                               Name  =  Currents_Slp_DFV_C_F_V
+       INFO_2: Initializing a FieldSet
+                               Name  =  Stress_UD
+       INFO_2: Initializing a FieldSet
+                               Name  =  Slope_1
+       INFO_2: Initializing a FieldSet
+                               Name  =  Slope_2
+       INFO_2: Initializing an EigenspeedSet_F
+                               Name  =  Currents_Egnspd_1
+       INFO_2: Initializing an EigenspeedSet_F
+                               Name  =  Currents_Egnspd_2
+       INFO_2: Initializing an EigenspeedSet_F
+                               Name  =  Currents_Egnspd_3
+       INFO_2: Adding a FieldSet to a Stream
+                             Stream  =  Stream_X
+                           FieldSet  =  Currents
+     INFO_1: Initializing a Slope_DFV_F_DT
+                               Name  =  Currents_Slp_DFV_F_DT
+       INFO_2: Initializing a Slope_DFV_PD
+                               Name  =  Currents_Slp_DFV_PD_V
+       INFO_2: Initializing a Slope_DFV_C_F
+                               Name  =  Currents_Slp_DFV_C_F_V
+       INFO_2: Initializing a FieldSet
+                               Name  =  Stress_UD
+       INFO_2: Adding a FieldSet to a Stream
+                             Stream  =  Stream_X
+                           FieldSet  =  Currents_Slp_DFV_F_DT
+     INFO_1: Initializing a CurrentSet
+                               Name  =  Reference
+     INFO_1: Initializing a CurrentSet
+                               Name  =  Difference
+       INFO_2: Adding a FieldSet to a Stream
+                             Stream  =  Stream_X
+                           FieldSet  =  Reference
+       INFO_2: Adding a FieldSet to a Stream
+                             Stream  =  Stream_X
+                           FieldSet  =  Difference
+   WARNING: ResetInitial method unset
+                             module  =  Integrator_H__Form
+                         subroutine  =  PrepareInitial
+   WARNING: Write method unset
+                             module  =  Integrator_H__Form
+                         subroutine  =  PrepareInitial
+   WARNING: Read method unset
+                             module  =  Integrator_H__Form
+                         subroutine  =  PrepareInitial
+   WARNING: Set_T_CheckpointInterval method unset
+                             module  =  Integrator_H__Form
+                         subroutine  =  PrepareInitial
+     INFO_1: ImposedAdvection_VL Parameters
+                   CoordinateSystem  =  SPHERICAL
+                      AdvectionType  =  CONTRACTION
+                       SpeedInitial  = -1.000000E+000
+                      LengthInitial  =  8.243872E+000
+                     DensityInitial  =  1.000000E+000
+     INFO_1: Checkpoint reached
+                        iCheckpoint  =         0
+                             iCycle  =         0
+                                  T  = -0.000000E+000 
+     INFO_1: Program timing
+       INFO_2: This process timers
+                          Execution  =  4.074966E-001 s
+       INFO_2: Across processes max timers
+                          Execution  =  4.074966E-001 s
+       INFO_2: Across processes min timers
+                          Execution  =  4.057490E-001 s
+       INFO_2: Across processes mean timers
+                          Execution  =  4.068446E-001 s
+     INFO_1: Significant mean timers
+                          Execution  =  4.068446E-001 s
+     INFO_1: Significant MAX - MEAN
+     INFO_1: Program memory usage
+                   This process HWM  =  6.324480E+005 kB
+                   This process RSS  =  6.324480E+005 kB
+           Across processes max HWM  =  6.329600E+005 kB
+           Across processes min HWM  =  6.288640E+005 kB
+          Across processes mean HWM  =  6.316960E+005 kB
+           Across processes max RSS  =  6.329600E+005 kB
+           Across processes min RSS  =  6.288640E+005 kB
+          Across processes mean RSS  =  6.316960E+005 kB
+     INFO_1: Device memory info
+         This process device memory  =  1.694551E+004 MB
+    This process device memory used  =  1.293550E+003 MB
+    This process device memory free  =  1.565196E+004 MB
+     INFO_1: Computing Tally
+       INFO_2: Initializing a VolumeIntegral
+                               Name  =  TallyInterior
+     INFO_1: Initializing a FieldSet
+                               Name  =  Integrand_TallyInterior
+       INFO_2: Initializing a SurfaceIntegral
+                               Name  =  TallyBoundary
+     INFO_1: Interior Tally Currents
+                   Density_Integral  =  2.376850E+003 
+     INFO_1: Boundary Extent Tally Currents
+                   Density_Integral  = -0.000000E+000 
+     INFO_1: Total Tally Currents
+                   Density_Integral  =  2.376850E+003 
+     INFO_1: Computing error
+                           FieldSet  =  Reference
+                           L1 Error
+                               ( 1 ) =  0.000000E+000
+                               ( 2 ) =  0.000000E+000
+                               ( 3 ) =  0.000000E+000
+                               ( 4 ) =  0.000000E+000
+     INFO_1: Creating a GridImage file for writing
+                               Name  =  SphericalContraction_VLC_2D
+                             Number  =  _0000000
+     INFO_1: Writing a Stream
+                               Name  =  Stream_X
+     INFO_1: Closing a GridImage file
+                               Name  =  SphericalContraction_VLC_2D
+                             Number  =  _0000000
+               T_CheckpointInterval  =  1.142843E+001 
+                  Next T_Checkpoint  =  1.142843E+001 
+     INFO_1: Starting evolution
+                               Name  =  Integrator
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                          Ramped dT  =  7.792715E-004 
+                              T_New  =  7.792715E-004 
+       INFO_2: Cycle computed
+                             iCycle  =         1
+                                  T  =  7.792715E-004 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                          Ramped dT  =  1.558543E-003 
+                              T_New  =  2.337814E-003 
+       INFO_2: Cycle computed
+                             iCycle  =         2
+                                  T  =  2.337814E-003 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                          Ramped dT  =  2.337814E-003 
+                              T_New  =  4.675629E-003 
+       INFO_2: Cycle computed
+                             iCycle  =         3
+                                  T  =  4.675629E-003 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                          Ramped dT  =  3.117086E-003 
+                              T_New  =  7.792715E-003 
+       INFO_2: Cycle computed
+                             iCycle  =         4
+                                  T  =  7.792715E-003 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                          Ramped dT  =  3.896357E-003 
+                              T_New  =  1.168907E-002 
+       INFO_2: Cycle computed
+                             iCycle  =         5
+                                  T  =  1.168907E-002 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                          Ramped dT  =  4.675629E-003 
+                              T_New  =  1.636470E-002 
+       INFO_2: Cycle computed
+                             iCycle  =         6
+                                  T  =  1.636470E-002 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                          Ramped dT  =  5.454900E-003 
+                              T_New  =  2.181960E-002 
+       INFO_2: Cycle computed
+                             iCycle  =         7
+                                  T  =  2.181960E-002 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                          Ramped dT  =  6.234172E-003 
+                              T_New  =  2.805377E-002 
+       INFO_2: Cycle computed
+                             iCycle  =         8
+                                  T  =  2.805377E-002 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                          Ramped dT  =  7.013443E-003 
+                              T_New  =  3.506722E-002 
+       INFO_2: Cycle computed
+                             iCycle  =         9
+                                  T  =  3.506722E-002 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                          Ramped dT  =  7.792715E-003 
+                              T_New  =  4.285993E-002 
+       INFO_2: Cycle computed
+                             iCycle  =        10
+                                  T  =  4.285993E-002 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                          Ramped dT  =  8.571986E-003 
+                              T_New  =  5.143192E-002 
+       INFO_2: Cycle computed
+                             iCycle  =        11
+                                  T  =  5.143192E-002 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                          Ramped dT  =  9.351258E-003 
+                              T_New  =  6.078318E-002 
+       INFO_2: Cycle computed
+                             iCycle  =        12
+                                  T  =  6.078318E-002 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                          Ramped dT  =  1.013053E-002 
+                              T_New  =  7.091371E-002 
+       INFO_2: Cycle computed
+                             iCycle  =        13
+                                  T  =  7.091371E-002 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                          Ramped dT  =  1.090980E-002 
+                              T_New  =  8.182351E-002 
+       INFO_2: Cycle computed
+                             iCycle  =        14
+                                  T  =  8.182351E-002 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                          Ramped dT  =  1.168907E-002 
+                              T_New  =  9.351258E-002 
+       INFO_2: Cycle computed
+                             iCycle  =        15
+                                  T  =  9.351258E-002 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                          Ramped dT  =  1.246834E-002 
+                              T_New  =  1.059809E-001 
+       INFO_2: Cycle computed
+                             iCycle  =        16
+                                  T  =  1.059809E-001 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                          Ramped dT  =  1.324762E-002 
+                              T_New  =  1.192285E-001 
+       INFO_2: Cycle computed
+                             iCycle  =        17
+                                  T  =  1.192285E-001 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                          Ramped dT  =  1.402689E-002 
+                              T_New  =  1.332554E-001 
+       INFO_2: Cycle computed
+                             iCycle  =        18
+                                  T  =  1.332554E-001 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                          Ramped dT  =  1.480616E-002 
+                              T_New  =  1.480616E-001 
+       INFO_2: Cycle computed
+                             iCycle  =        19
+                                  T  =  1.480616E-001 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                          Ramped dT  =  1.558543E-002 
+                              T_New  =  1.636470E-001 
+       INFO_2: Cycle computed
+                             iCycle  =        20
+                                  T  =  1.636470E-001 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                          Ramped dT  =  1.636470E-002 
+                              T_New  =  1.800117E-001 
+       INFO_2: Cycle computed
+                             iCycle  =        21
+                                  T  =  1.800117E-001 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                          Ramped dT  =  1.714397E-002 
+                              T_New  =  1.971557E-001 
+       INFO_2: Cycle computed
+                             iCycle  =        22
+                                  T  =  1.971557E-001 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                          Ramped dT  =  1.792324E-002 
+                              T_New  =  2.150789E-001 
+       INFO_2: Cycle computed
+                             iCycle  =        23
+                                  T  =  2.150789E-001 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                          Ramped dT  =  1.870252E-002 
+                              T_New  =  2.337814E-001 
+       INFO_2: Cycle computed
+                             iCycle  =        24
+                                  T  =  2.337814E-001 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                          Ramped dT  =  1.948179E-002 
+                              T_New  =  2.532632E-001 
+       INFO_2: Cycle computed
+                             iCycle  =        25
+                                  T  =  2.532632E-001 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                          Ramped dT  =  2.026106E-002 
+                              T_New  =  2.735243E-001 
+       INFO_2: Cycle computed
+                             iCycle  =        26
+                                  T  =  2.735243E-001 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                          Ramped dT  =  2.104033E-002 
+                              T_New  =  2.945646E-001 
+       INFO_2: Cycle computed
+                             iCycle  =        27
+                                  T  =  2.945646E-001 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                          Ramped dT  =  2.181960E-002 
+                              T_New  =  3.163842E-001 
+       INFO_2: Cycle computed
+                             iCycle  =        28
+                                  T  =  3.163842E-001 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                          Ramped dT  =  2.259887E-002 
+                              T_New  =  3.389831E-001 
+       INFO_2: Cycle computed
+                             iCycle  =        29
+                                  T  =  3.389831E-001 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                          Ramped dT  =  2.337814E-002 
+                              T_New  =  3.623612E-001 
+       INFO_2: Cycle computed
+                             iCycle  =        30
+                                  T  =  3.623612E-001 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                          Ramped dT  =  2.415742E-002 
+                              T_New  =  3.865187E-001 
+       INFO_2: Cycle computed
+                             iCycle  =        31
+                                  T  =  3.865187E-001 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                          Ramped dT  =  2.493669E-002 
+                              T_New  =  4.114553E-001 
+       INFO_2: Cycle computed
+                             iCycle  =        32
+                                  T  =  4.114553E-001 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                          Ramped dT  =  2.571596E-002 
+                              T_New  =  4.371713E-001 
+       INFO_2: Cycle computed
+                             iCycle  =        33
+                                  T  =  4.371713E-001 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                          Ramped dT  =  2.649523E-002 
+                              T_New  =  4.636665E-001 
+       INFO_2: Cycle computed
+                             iCycle  =        34
+                                  T  =  4.636665E-001 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                          Ramped dT  =  2.727450E-002 
+                              T_New  =  4.909410E-001 
+       INFO_2: Cycle computed
+                             iCycle  =        35
+                                  T  =  4.909410E-001 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                          Ramped dT  =  2.805377E-002 
+                              T_New  =  5.189948E-001 
+       INFO_2: Cycle computed
+                             iCycle  =        36
+                                  T  =  5.189948E-001 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                          Ramped dT  =  2.883304E-002 
+                              T_New  =  5.478279E-001 
+       INFO_2: Cycle computed
+                             iCycle  =        37
+                                  T  =  5.478279E-001 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                          Ramped dT  =  2.961232E-002 
+                              T_New  =  5.774402E-001 
+       INFO_2: Cycle computed
+                             iCycle  =        38
+                                  T  =  5.774402E-001 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                          Ramped dT  =  3.039159E-002 
+                              T_New  =  6.078318E-001 
+       INFO_2: Cycle computed
+                             iCycle  =        39
+                                  T  =  6.078318E-001 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                          Ramped dT  =  3.117086E-002 
+                              T_New  =  6.390026E-001 
+       INFO_2: Cycle computed
+                             iCycle  =        40
+                                  T  =  6.390026E-001 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                          Ramped dT  =  3.195013E-002 
+                              T_New  =  6.709527E-001 
+       INFO_2: Cycle computed
+                             iCycle  =        41
+                                  T  =  6.709527E-001 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                          Ramped dT  =  3.272940E-002 
+                              T_New  =  7.036822E-001 
+       INFO_2: Cycle computed
+                             iCycle  =        42
+                                  T  =  7.036822E-001 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                          Ramped dT  =  3.350867E-002 
+                              T_New  =  7.371908E-001 
+       INFO_2: Cycle computed
+                             iCycle  =        43
+                                  T  =  7.371908E-001 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                          Ramped dT  =  3.428795E-002 
+                              T_New  =  7.714788E-001 
+       INFO_2: Cycle computed
+                             iCycle  =        44
+                                  T  =  7.714788E-001 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                          Ramped dT  =  3.506722E-002 
+                              T_New  =  8.065460E-001 
+       INFO_2: Cycle computed
+                             iCycle  =        45
+                                  T  =  8.065460E-001 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                          Ramped dT  =  3.584649E-002 
+                              T_New  =  8.423925E-001 
+       INFO_2: Cycle computed
+                             iCycle  =        46
+                                  T  =  8.423925E-001 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                          Ramped dT  =  3.662576E-002 
+                              T_New  =  8.790182E-001 
+       INFO_2: Cycle computed
+                             iCycle  =        47
+                                  T  =  8.790182E-001 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                          Ramped dT  =  3.740503E-002 
+                              T_New  =  9.164233E-001 
+       INFO_2: Cycle computed
+                             iCycle  =        48
+                                  T  =  9.164233E-001 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                          Ramped dT  =  3.818430E-002 
+                              T_New  =  9.546076E-001 
+       INFO_2: Cycle computed
+                             iCycle  =        49
+                                  T  =  9.546076E-001 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                          Ramped dT  =  3.896357E-002 
+                              T_New  =  9.935711E-001 
+       INFO_2: Cycle computed
+                             iCycle  =        50
+                                  T  =  9.935711E-001 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                          Ramped dT  =  3.974285E-002 
+                              T_New  =  1.033314E+000 
+       INFO_2: Cycle computed
+                             iCycle  =        51
+                                  T  =  1.033314E+000 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                          Ramped dT  =  4.052212E-002 
+                              T_New  =  1.073836E+000 
+       INFO_2: Cycle computed
+                             iCycle  =        52
+                                  T  =  1.073836E+000 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                          Ramped dT  =  4.130139E-002 
+                              T_New  =  1.115137E+000 
+       INFO_2: Cycle computed
+                             iCycle  =        53
+                                  T  =  1.115137E+000 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                          Ramped dT  =  4.208066E-002 
+                              T_New  =  1.157218E+000 
+       INFO_2: Cycle computed
+                             iCycle  =        54
+                                  T  =  1.157218E+000 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                          Ramped dT  =  4.285993E-002 
+                              T_New  =  1.200078E+000 
+       INFO_2: Cycle computed
+                             iCycle  =        55
+                                  T  =  1.200078E+000 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                          Ramped dT  =  4.363920E-002 
+                              T_New  =  1.243717E+000 
+       INFO_2: Cycle computed
+                             iCycle  =        56
+                                  T  =  1.243717E+000 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                          Ramped dT  =  4.441847E-002 
+                              T_New  =  1.288136E+000 
+       INFO_2: Cycle computed
+                             iCycle  =        57
+                                  T  =  1.288136E+000 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                          Ramped dT  =  4.519775E-002 
+                              T_New  =  1.333334E+000 
+       INFO_2: Cycle computed
+                             iCycle  =        58
+                                  T  =  1.333334E+000 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                          Ramped dT  =  4.597702E-002 
+                              T_New  =  1.379311E+000 
+       INFO_2: Cycle computed
+                             iCycle  =        59
+                                  T  =  1.379311E+000 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                          Ramped dT  =  4.675629E-002 
+                              T_New  =  1.426067E+000 
+       INFO_2: Cycle computed
+                             iCycle  =        60
+                                  T  =  1.426067E+000 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                          Ramped dT  =  4.753556E-002 
+                              T_New  =  1.473602E+000 
+       INFO_2: Cycle computed
+                             iCycle  =        61
+                                  T  =  1.473602E+000 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                          Ramped dT  =  4.831483E-002 
+                              T_New  =  1.521917E+000 
+       INFO_2: Cycle computed
+                             iCycle  =        62
+                                  T  =  1.521917E+000 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                          Ramped dT  =  4.909410E-002 
+                              T_New  =  1.571011E+000 
+       INFO_2: Cycle computed
+                             iCycle  =        63
+                                  T  =  1.571011E+000 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                          Ramped dT  =  4.987338E-002 
+                              T_New  =  1.620885E+000 
+       INFO_2: Cycle computed
+                             iCycle  =        64
+                                  T  =  1.620885E+000 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                          Ramped dT  =  5.065265E-002 
+                              T_New  =  1.671537E+000 
+       INFO_2: Cycle computed
+                             iCycle  =        65
+                                  T  =  1.671537E+000 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                          Ramped dT  =  5.143192E-002 
+                              T_New  =  1.722969E+000 
+       INFO_2: Cycle computed
+                             iCycle  =        66
+                                  T  =  1.722969E+000 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                          Ramped dT  =  5.221119E-002 
+                              T_New  =  1.775180E+000 
+       INFO_2: Cycle computed
+                             iCycle  =        67
+                                  T  =  1.775180E+000 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                          Ramped dT  =  5.299046E-002 
+                              T_New  =  1.828171E+000 
+       INFO_2: Cycle computed
+                             iCycle  =        68
+                                  T  =  1.828171E+000 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                          Ramped dT  =  5.376973E-002 
+                              T_New  =  1.881941E+000 
+       INFO_2: Cycle computed
+                             iCycle  =        69
+                                  T  =  1.881941E+000 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                          Ramped dT  =  5.454900E-002 
+                              T_New  =  1.936490E+000 
+       INFO_2: Cycle computed
+                             iCycle  =        70
+                                  T  =  1.936490E+000 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                          Ramped dT  =  5.532828E-002 
+                              T_New  =  1.991818E+000 
+       INFO_2: Cycle computed
+                             iCycle  =        71
+                                  T  =  1.991818E+000 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                          Ramped dT  =  5.610755E-002 
+                              T_New  =  2.047925E+000 
+       INFO_2: Cycle computed
+                             iCycle  =        72
+                                  T  =  2.047925E+000 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                          Ramped dT  =  5.688682E-002 
+                              T_New  =  2.104812E+000 
+       INFO_2: Cycle computed
+                             iCycle  =        73
+                                  T  =  2.104812E+000 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                          Ramped dT  =  5.766609E-002 
+                              T_New  =  2.162478E+000 
+       INFO_2: Cycle computed
+                             iCycle  =        74
+                                  T  =  2.162478E+000 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                          Ramped dT  =  5.844536E-002 
+                              T_New  =  2.220924E+000 
+       INFO_2: Cycle computed
+                             iCycle  =        75
+                                  T  =  2.220924E+000 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                          Ramped dT  =  5.922463E-002 
+                              T_New  =  2.280148E+000 
+       INFO_2: Cycle computed
+                             iCycle  =        76
+                                  T  =  2.280148E+000 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                          Ramped dT  =  6.000390E-002 
+                              T_New  =  2.340152E+000 
+       INFO_2: Cycle computed
+                             iCycle  =        77
+                                  T  =  2.340152E+000 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                          Ramped dT  =  6.078318E-002 
+                              T_New  =  2.400935E+000 
+       INFO_2: Cycle computed
+                             iCycle  =        78
+                                  T  =  2.400935E+000 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                          Ramped dT  =  6.156245E-002 
+                              T_New  =  2.462498E+000 
+       INFO_2: Cycle computed
+                             iCycle  =        79
+                                  T  =  2.462498E+000 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                          Ramped dT  =  6.234172E-002 
+                              T_New  =  2.524840E+000 
+       INFO_2: Cycle computed
+                             iCycle  =        80
+                                  T  =  2.524840E+000 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                          Ramped dT  =  6.312099E-002 
+                              T_New  =  2.587961E+000 
+       INFO_2: Cycle computed
+                             iCycle  =        81
+                                  T  =  2.587961E+000 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                          Ramped dT  =  6.390026E-002 
+                              T_New  =  2.651861E+000 
+       INFO_2: Cycle computed
+                             iCycle  =        82
+                                  T  =  2.651861E+000 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                          Ramped dT  =  6.467953E-002 
+                              T_New  =  2.716540E+000 
+       INFO_2: Cycle computed
+                             iCycle  =        83
+                                  T  =  2.716540E+000 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                          Ramped dT  =  6.545880E-002 
+                              T_New  =  2.781999E+000 
+       INFO_2: Cycle computed
+                             iCycle  =        84
+                                  T  =  2.781999E+000 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                          Ramped dT  =  6.623808E-002 
+                              T_New  =  2.848237E+000 
+       INFO_2: Cycle computed
+                             iCycle  =        85
+                                  T  =  2.848237E+000 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                          Ramped dT  =  6.701735E-002 
+                              T_New  =  2.915255E+000 
+       INFO_2: Cycle computed
+                             iCycle  =        86
+                                  T  =  2.915255E+000 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                          Ramped dT  =  6.779662E-002 
+                              T_New  =  2.983051E+000 
+       INFO_2: Cycle computed
+                             iCycle  =        87
+                                  T  =  2.983051E+000 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                          Ramped dT  =  6.857589E-002 
+                              T_New  =  3.051627E+000 
+       INFO_2: Cycle computed
+                             iCycle  =        88
+                                  T  =  3.051627E+000 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                          Ramped dT  =  6.935516E-002 
+                              T_New  =  3.120982E+000 
+       INFO_2: Cycle computed
+                             iCycle  =        89
+                                  T  =  3.120982E+000 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                          Ramped dT  =  7.013443E-002 
+                              T_New  =  3.191117E+000 
+       INFO_2: Cycle computed
+                             iCycle  =        90
+                                  T  =  3.191117E+000 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                          Ramped dT  =  7.091371E-002 
+                              T_New  =  3.262030E+000 
+       INFO_2: Cycle computed
+                             iCycle  =        91
+                                  T  =  3.262030E+000 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                          Ramped dT  =  7.169298E-002 
+                              T_New  =  3.333723E+000 
+       INFO_2: Cycle computed
+                             iCycle  =        92
+                                  T  =  3.333723E+000 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                          Ramped dT  =  7.247225E-002 
+                              T_New  =  3.406196E+000 
+       INFO_2: Cycle computed
+                             iCycle  =        93
+                                  T  =  3.406196E+000 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                          Ramped dT  =  7.325152E-002 
+                              T_New  =  3.479447E+000 
+       INFO_2: Cycle computed
+                             iCycle  =        94
+                                  T  =  3.479447E+000 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                          Ramped dT  =  7.403079E-002 
+                              T_New  =  3.553478E+000 
+       INFO_2: Cycle computed
+                             iCycle  =        95
+                                  T  =  3.553478E+000 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                          Ramped dT  =  7.481006E-002 
+                              T_New  =  3.628288E+000 
+       INFO_2: Cycle computed
+                             iCycle  =        96
+                                  T  =  3.628288E+000 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                          Ramped dT  =  7.558933E-002 
+                              T_New  =  3.703877E+000 
+       INFO_2: Cycle computed
+                             iCycle  =        97
+                                  T  =  3.703877E+000 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                          Ramped dT  =  7.636861E-002 
+                              T_New  =  3.780246E+000 
+       INFO_2: Cycle computed
+                             iCycle  =        98
+                                  T  =  3.780246E+000 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                          Ramped dT  =  7.714788E-002 
+                              T_New  =  3.857394E+000 
+       INFO_2: Cycle computed
+                             iCycle  =        99
+                                  T  =  3.857394E+000 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                              T_New  =  3.935321E+000 
+       INFO_2: Cycle computed
+                             iCycle  =       100
+                                  T  =  3.935321E+000 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                              T_New  =  4.013248E+000 
+       INFO_2: Cycle computed
+                             iCycle  =       101
+                                  T  =  4.013248E+000 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                              T_New  =  4.091175E+000 
+       INFO_2: Cycle computed
+                             iCycle  =       102
+                                  T  =  4.091175E+000 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                              T_New  =  4.169102E+000 
+       INFO_2: Cycle computed
+                             iCycle  =       103
+                                  T  =  4.169102E+000 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                              T_New  =  4.247030E+000 
+       INFO_2: Cycle computed
+                             iCycle  =       104
+                                  T  =  4.247030E+000 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                              T_New  =  4.324957E+000 
+       INFO_2: Cycle computed
+                             iCycle  =       105
+                                  T  =  4.324957E+000 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                              T_New  =  4.402884E+000 
+       INFO_2: Cycle computed
+                             iCycle  =       106
+                                  T  =  4.402884E+000 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                              T_New  =  4.480811E+000 
+       INFO_2: Cycle computed
+                             iCycle  =       107
+                                  T  =  4.480811E+000 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                              T_New  =  4.558738E+000 
+       INFO_2: Cycle computed
+                             iCycle  =       108
+                                  T  =  4.558738E+000 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                              T_New  =  4.636665E+000 
+       INFO_2: Cycle computed
+                             iCycle  =       109
+                                  T  =  4.636665E+000 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                              T_New  =  4.714592E+000 
+       INFO_2: Cycle computed
+                             iCycle  =       110
+                                  T  =  4.714592E+000 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                              T_New  =  4.792520E+000 
+       INFO_2: Cycle computed
+                             iCycle  =       111
+                                  T  =  4.792520E+000 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                              T_New  =  4.870447E+000 
+       INFO_2: Cycle computed
+                             iCycle  =       112
+                                  T  =  4.870447E+000 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                              T_New  =  4.948374E+000 
+       INFO_2: Cycle computed
+                             iCycle  =       113
+                                  T  =  4.948374E+000 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                              T_New  =  5.026301E+000 
+       INFO_2: Cycle computed
+                             iCycle  =       114
+                                  T  =  5.026301E+000 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                              T_New  =  5.104228E+000 
+       INFO_2: Cycle computed
+                             iCycle  =       115
+                                  T  =  5.104228E+000 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                              T_New  =  5.182155E+000 
+       INFO_2: Cycle computed
+                             iCycle  =       116
+                                  T  =  5.182155E+000 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                              T_New  =  5.260083E+000 
+       INFO_2: Cycle computed
+                             iCycle  =       117
+                                  T  =  5.260083E+000 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                              T_New  =  5.338010E+000 
+       INFO_2: Cycle computed
+                             iCycle  =       118
+                                  T  =  5.338010E+000 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                              T_New  =  5.415937E+000 
+       INFO_2: Cycle computed
+                             iCycle  =       119
+                                  T  =  5.415937E+000 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                              T_New  =  5.493864E+000 
+       INFO_2: Cycle computed
+                             iCycle  =       120
+                                  T  =  5.493864E+000 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                              T_New  =  5.571791E+000 
+       INFO_2: Cycle computed
+                             iCycle  =       121
+                                  T  =  5.571791E+000 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                              T_New  =  5.649718E+000 
+       INFO_2: Cycle computed
+                             iCycle  =       122
+                                  T  =  5.649718E+000 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                              T_New  =  5.727645E+000 
+       INFO_2: Cycle computed
+                             iCycle  =       123
+                                  T  =  5.727645E+000 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                              T_New  =  5.805573E+000 
+       INFO_2: Cycle computed
+                             iCycle  =       124
+                                  T  =  5.805573E+000 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                              T_New  =  5.883500E+000 
+       INFO_2: Cycle computed
+                             iCycle  =       125
+                                  T  =  5.883500E+000 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                              T_New  =  5.961427E+000 
+       INFO_2: Cycle computed
+                             iCycle  =       126
+                                  T  =  5.961427E+000 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                              T_New  =  6.039354E+000 
+       INFO_2: Cycle computed
+                             iCycle  =       127
+                                  T  =  6.039354E+000 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                              T_New  =  6.117281E+000 
+       INFO_2: Cycle computed
+                             iCycle  =       128
+                                  T  =  6.117281E+000 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                              T_New  =  6.195208E+000 
+       INFO_2: Cycle computed
+                             iCycle  =       129
+                                  T  =  6.195208E+000 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                              T_New  =  6.273135E+000 
+       INFO_2: Cycle computed
+                             iCycle  =       130
+                                  T  =  6.273135E+000 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                              T_New  =  6.351063E+000 
+       INFO_2: Cycle computed
+                             iCycle  =       131
+                                  T  =  6.351063E+000 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                              T_New  =  6.428990E+000 
+       INFO_2: Cycle computed
+                             iCycle  =       132
+                                  T  =  6.428990E+000 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                              T_New  =  6.506917E+000 
+       INFO_2: Cycle computed
+                             iCycle  =       133
+                                  T  =  6.506917E+000 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                              T_New  =  6.584844E+000 
+       INFO_2: Cycle computed
+                             iCycle  =       134
+                                  T  =  6.584844E+000 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                              T_New  =  6.662771E+000 
+       INFO_2: Cycle computed
+                             iCycle  =       135
+                                  T  =  6.662771E+000 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                              T_New  =  6.740698E+000 
+       INFO_2: Cycle computed
+                             iCycle  =       136
+                                  T  =  6.740698E+000 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                              T_New  =  6.818626E+000 
+       INFO_2: Cycle computed
+                             iCycle  =       137
+                                  T  =  6.818626E+000 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                              T_New  =  6.896553E+000 
+       INFO_2: Cycle computed
+                             iCycle  =       138
+                                  T  =  6.896553E+000 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                              T_New  =  6.974480E+000 
+       INFO_2: Cycle computed
+                             iCycle  =       139
+                                  T  =  6.974480E+000 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                              T_New  =  7.052407E+000 
+       INFO_2: Cycle computed
+                             iCycle  =       140
+                                  T  =  7.052407E+000 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                              T_New  =  7.130334E+000 
+       INFO_2: Cycle computed
+                             iCycle  =       141
+                                  T  =  7.130334E+000 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                              T_New  =  7.208261E+000 
+       INFO_2: Cycle computed
+                             iCycle  =       142
+                                  T  =  7.208261E+000 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                              T_New  =  7.286188E+000 
+       INFO_2: Cycle computed
+                             iCycle  =       143
+                                  T  =  7.286188E+000 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                              T_New  =  7.364116E+000 
+       INFO_2: Cycle computed
+                             iCycle  =       144
+                                  T  =  7.364116E+000 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                              T_New  =  7.442043E+000 
+       INFO_2: Cycle computed
+                             iCycle  =       145
+                                  T  =  7.442043E+000 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                              T_New  =  7.519970E+000 
+       INFO_2: Cycle computed
+                             iCycle  =       146
+                                  T  =  7.519970E+000 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                              T_New  =  7.597897E+000 
+       INFO_2: Cycle computed
+                             iCycle  =       147
+                                  T  =  7.597897E+000 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                              T_New  =  7.675824E+000 
+       INFO_2: Cycle computed
+                             iCycle  =       148
+                                  T  =  7.675824E+000 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                              T_New  =  7.753751E+000 
+       INFO_2: Cycle computed
+                             iCycle  =       149
+                                  T  =  7.753751E+000 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                              T_New  =  7.831678E+000 
+       INFO_2: Cycle computed
+                             iCycle  =       150
+                                  T  =  7.831678E+000 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                              T_New  =  7.909606E+000 
+       INFO_2: Cycle computed
+                             iCycle  =       151
+                                  T  =  7.909606E+000 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                              T_New  =  7.987533E+000 
+       INFO_2: Cycle computed
+                             iCycle  =       152
+                                  T  =  7.987533E+000 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                              T_New  =  8.065460E+000 
+       INFO_2: Cycle computed
+                             iCycle  =       153
+                                  T  =  8.065460E+000 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                              T_New  =  8.143387E+000 
+       INFO_2: Cycle computed
+                             iCycle  =       154
+                                  T  =  8.143387E+000 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                              T_New  =  8.221314E+000 
+       INFO_2: Cycle computed
+                             iCycle  =       155
+                                  T  =  8.221314E+000 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                              T_New  =  8.299241E+000 
+       INFO_2: Cycle computed
+                             iCycle  =       156
+                                  T  =  8.299241E+000 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                              T_New  =  8.377168E+000 
+       INFO_2: Cycle computed
+                             iCycle  =       157
+                                  T  =  8.377168E+000 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                              T_New  =  8.455096E+000 
+       INFO_2: Cycle computed
+                             iCycle  =       158
+                                  T  =  8.455096E+000 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                              T_New  =  8.533023E+000 
+       INFO_2: Cycle computed
+                             iCycle  =       159
+                                  T  =  8.533023E+000 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                              T_New  =  8.610950E+000 
+       INFO_2: Cycle computed
+                             iCycle  =       160
+                                  T  =  8.610950E+000 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                              T_New  =  8.688877E+000 
+       INFO_2: Cycle computed
+                             iCycle  =       161
+                                  T  =  8.688877E+000 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                              T_New  =  8.766804E+000 
+       INFO_2: Cycle computed
+                             iCycle  =       162
+                                  T  =  8.766804E+000 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                              T_New  =  8.844731E+000 
+       INFO_2: Cycle computed
+                             iCycle  =       163
+                                  T  =  8.844731E+000 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                              T_New  =  8.922659E+000 
+       INFO_2: Cycle computed
+                             iCycle  =       164
+                                  T  =  8.922659E+000 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                              T_New  =  9.000586E+000 
+       INFO_2: Cycle computed
+                             iCycle  =       165
+                                  T  =  9.000586E+000 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                              T_New  =  9.078513E+000 
+       INFO_2: Cycle computed
+                             iCycle  =       166
+                                  T  =  9.078513E+000 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                              T_New  =  9.156440E+000 
+       INFO_2: Cycle computed
+                             iCycle  =       167
+                                  T  =  9.156440E+000 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                              T_New  =  9.234367E+000 
+       INFO_2: Cycle computed
+                             iCycle  =       168
+                                  T  =  9.234367E+000 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                              T_New  =  9.312294E+000 
+       INFO_2: Cycle computed
+                             iCycle  =       169
+                                  T  =  9.312294E+000 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                              T_New  =  9.390221E+000 
+       INFO_2: Cycle computed
+                             iCycle  =       170
+                                  T  =  9.390221E+000 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                              T_New  =  9.468149E+000 
+       INFO_2: Cycle computed
+                             iCycle  =       171
+                                  T  =  9.468149E+000 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                              T_New  =  9.546076E+000 
+       INFO_2: Cycle computed
+                             iCycle  =       172
+                                  T  =  9.546076E+000 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                              T_New  =  9.624003E+000 
+       INFO_2: Cycle computed
+                             iCycle  =       173
+                                  T  =  9.624003E+000 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                              T_New  =  9.701930E+000 
+       INFO_2: Cycle computed
+                             iCycle  =       174
+                                  T  =  9.701930E+000 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                              T_New  =  9.779857E+000 
+       INFO_2: Cycle computed
+                             iCycle  =       175
+                                  T  =  9.779857E+000 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                              T_New  =  9.857784E+000 
+       INFO_2: Cycle computed
+                             iCycle  =       176
+                                  T  =  9.857784E+000 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                              T_New  =  9.935711E+000 
+       INFO_2: Cycle computed
+                             iCycle  =       177
+                                  T  =  9.935711E+000 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                              T_New  =  1.001364E+001 
+       INFO_2: Cycle computed
+                             iCycle  =       178
+                                  T  =  1.001364E+001 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                              T_New  =  1.009157E+001 
+       INFO_2: Cycle computed
+                             iCycle  =       179
+                                  T  =  1.009157E+001 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                              T_New  =  1.016949E+001 
+       INFO_2: Cycle computed
+                             iCycle  =       180
+                                  T  =  1.016949E+001 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                              T_New  =  1.024742E+001 
+       INFO_2: Cycle computed
+                             iCycle  =       181
+                                  T  =  1.024742E+001 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                              T_New  =  1.032535E+001 
+       INFO_2: Cycle computed
+                             iCycle  =       182
+                                  T  =  1.032535E+001 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                              T_New  =  1.040327E+001 
+       INFO_2: Cycle computed
+                             iCycle  =       183
+                                  T  =  1.040327E+001 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                              T_New  =  1.048120E+001 
+       INFO_2: Cycle computed
+                             iCycle  =       184
+                                  T  =  1.048120E+001 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                              T_New  =  1.055913E+001 
+       INFO_2: Cycle computed
+                             iCycle  =       185
+                                  T  =  1.055913E+001 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                              T_New  =  1.063706E+001 
+       INFO_2: Cycle computed
+                             iCycle  =       186
+                                  T  =  1.063706E+001 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                              T_New  =  1.071498E+001 
+       INFO_2: Cycle computed
+                             iCycle  =       187
+                                  T  =  1.071498E+001 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                              T_New  =  1.079291E+001 
+       INFO_2: Cycle computed
+                             iCycle  =       188
+                                  T  =  1.079291E+001 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                              T_New  =  1.087084E+001 
+       INFO_2: Cycle computed
+                             iCycle  =       189
+                                  T  =  1.087084E+001 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                              T_New  =  1.094876E+001 
+       INFO_2: Cycle computed
+                             iCycle  =       190
+                                  T  =  1.094876E+001 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                              T_New  =  1.102669E+001 
+       INFO_2: Cycle computed
+                             iCycle  =       191
+                                  T  =  1.102669E+001 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                              T_New  =  1.110462E+001 
+       INFO_2: Cycle computed
+                             iCycle  =       192
+                                  T  =  1.110462E+001 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                              T_New  =  1.118255E+001 
+       INFO_2: Cycle computed
+                             iCycle  =       193
+                                  T  =  1.118255E+001 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                              T_New  =  1.126047E+001 
+       INFO_2: Cycle computed
+                             iCycle  =       194
+                                  T  =  1.126047E+001 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                              T_New  =  1.133840E+001 
+       INFO_2: Cycle computed
+                             iCycle  =       195
+                                  T  =  1.133840E+001 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+                              T_New  =  1.141633E+001 
+       INFO_2: Cycle computed
+                             iCycle  =       196
+                                  T  =  1.141633E+001 
+       INFO_2: Computing a cycle
+                  FastEigenspeed dT  =  7.792715E-002 
+     INFO_1: T_Checkpoint encountered
+                        Modified dT  =  1.210605E-002 
+                              T_New  =  1.142843E+001 
+       INFO_2: Cycle computed
+                             iCycle  =       197
+                                  T  =  1.142843E+001 
+     INFO_1: Checkpoint reached
+                        iCheckpoint  =         1
+                             iCycle  =       197
+                                  T  =  1.142843E+001 
+                  FastEigenspeed dT  =  7.792715E-002 
+     INFO_1: Program timing
+       INFO_2: This process timers
+                          Execution  =  1.611104E+000 s
+                 Integrator_Evltn :  =  1.176692E+000 s
+              Integrator_CmptCcl ::  =  1.172095E+000 s
+              Integrator_PprCcl :::  =  4.491300E-005 s
+              Integrator_CmptDt :::  =  3.101195E-002 s
+                   Currents_Stp :::  =  1.139960E+000 s
+           Currents_Stp_LdIntl ::::  =  4.153104E-003 s
+      Currents_Stp_IntlzIntmdt ::::  =  3.397804E-003 s
+    Currents_Stp_IncrmntIntmdt ::::  =  4.862756E-003 s
+          Currents_Stp_CmptStg ::::  =  8.172375E-001 s
+        Currents_Slp_DFV_F_DT :::::  =  4.294278E-001 s
+       Currents_Slp_DFV_PD_V ::::::  =  3.858573E-001 s
+  Currents_Slp_DFV_PD_V_Clr :::::::  =  7.104115E-003 s
+     Currents_RmnnSlvr_Prpr :::::::  =  1.629210E-001 s
+urrents_RmnnSlvr_Rcnstrctn ::::::::  =  9.404563E-002 s
+Currents_RmnnSlvr_FrmPrmtv ::::::::  =  1.696350E-004 s
+ Currents_RmnnSlvr_Egnspds ::::::::  =  2.764028E-002 s
+   Currents_RmnnSlvr_Alpha ::::::::  =  3.593560E-002 s
+     Currents_RmnnSlvr_Cmpt :::::::  =  1.151219E-001 s
+     Currents_RmnnSlvr_Flx ::::::::  =  2.681478E-002 s
+Currents_RmnnSlvr_Krnl_HLL ::::::::  =  8.527756E-002 s
+ Currents_Slp_DFV_PD_V_Krnl :::::::  =  9.592318E-002 s
+      Currents_Slp_DFV_C_F_V ::::::  =  1.420688E-002 s
+urrents_Slp_DFV_C_F_V_Strss :::::::  =  1.314425E-002 s
+Currents_Slp_DFV_C_F_V_Krnl :::::::  =  0.000000E+000 s
+    Currents_Slp_DFV_F_DT_MA ::::::  =  2.668949E-002 s
+   Currents_Slp_DFV_F_DT_Ghst :::::  =  2.801940E-001 s
+       Currents_Stp_AccmltSlp :::::  =  1.053631E-001 s
+          Currents_Stp_StrSltn ::::  =  2.971774E-001 s
+         Currents_Stp_CpySltn :::::  =  6.937025E-003 s
+        Currents_Stp_FrmBlncd :::::  =  7.550800E-005 s
+     Currents_Stp_BndryCndtns :::::  =  2.879820E-001 s
+      Currents_Stp_IncrmntSltn ::::  =  9.440423E-003 s
+              Integrator_Chckpnt ::  =  3.318080E-004 s
+             Integrator_UpdtHst :::  =  8.829500E-005 s
+       INFO_2: Across processes max timers
+                          Execution  =  1.611104E+000 s
+                 Integrator_Evltn :  =  1.186747E+000 s
+              Integrator_CmptCcl ::  =  1.186200E+000 s
+              Integrator_PprCcl :::  =  4.491300E-005 s
+              Integrator_CmptDt :::  =  8.276216E-002 s
+                   Currents_Stp :::  =  1.150420E+000 s
+           Currents_Stp_LdIntl ::::  =  4.153104E-003 s
+      Currents_Stp_IntlzIntmdt ::::  =  3.489630E-003 s
+    Currents_Stp_IncrmntIntmdt ::::  =  4.985431E-003 s
+          Currents_Stp_CmptStg ::::  =  8.936728E-001 s
+        Currents_Slp_DFV_F_DT :::::  =  4.364324E-001 s
+       Currents_Slp_DFV_PD_V ::::::  =  3.928852E-001 s
+  Currents_Slp_DFV_PD_V_Clr :::::::  =  7.104115E-003 s
+     Currents_RmnnSlvr_Prpr :::::::  =  1.653928E-001 s
+urrents_RmnnSlvr_Rcnstrctn ::::::::  =  9.598622E-002 s
+Currents_RmnnSlvr_FrmPrmtv ::::::::  =  1.696350E-004 s
+ Currents_RmnnSlvr_Egnspds ::::::::  =  2.813020E-002 s
+   Currents_RmnnSlvr_Alpha ::::::::  =  3.605851E-002 s
+     Currents_RmnnSlvr_Cmpt :::::::  =  1.174874E-001 s
+     Currents_RmnnSlvr_Flx ::::::::  =  2.712766E-002 s
+Currents_RmnnSlvr_Krnl_HLL ::::::::  =  8.734039E-002 s
+ Currents_Slp_DFV_PD_V_Krnl :::::::  =  9.822559E-002 s
+      Currents_Slp_DFV_C_F_V ::::::  =  1.420688E-002 s
+urrents_Slp_DFV_C_F_V_Strss :::::::  =  1.314425E-002 s
+Currents_Slp_DFV_C_F_V_Krnl :::::::  =  0.000000E+000 s
+    Currents_Slp_DFV_F_DT_MA ::::::  =  2.677221E-002 s
+   Currents_Slp_DFV_F_DT_Ghst :::::  =  3.786767E-001 s
+       Currents_Stp_AccmltSlp :::::  =  1.079709E-001 s
+          Currents_Stp_StrSltn ::::  =  2.971774E-001 s
+         Currents_Stp_CpySltn :::::  =  6.954580E-003 s
+        Currents_Stp_FrmBlncd :::::  =  7.550800E-005 s
+     Currents_Stp_BndryCndtns :::::  =  2.879820E-001 s
+      Currents_Stp_IncrmntSltn ::::  =  9.758158E-003 s
+              Integrator_Chckpnt ::  =  3.318080E-004 s
+             Integrator_UpdtHst :::  =  9.063200E-005 s
+       INFO_2: Across processes min timers
+                          Execution  =  1.610761E+000 s
+                 Integrator_Evltn :  =  1.176692E+000 s
+              Integrator_CmptCcl ::  =  1.172095E+000 s
+              Integrator_PprCcl :::  =  3.199800E-005 s
+              Integrator_CmptDt :::  =  2.921796E-002 s
+                   Currents_Stp :::  =  1.102377E+000 s
+           Currents_Stp_LdIntl ::::  =  3.921420E-003 s
+      Currents_Stp_IntlzIntmdt ::::  =  3.350835E-003 s
+    Currents_Stp_IncrmntIntmdt ::::  =  4.823001E-003 s
+          Currents_Stp_CmptStg ::::  =  8.172375E-001 s
+        Currents_Slp_DFV_F_DT :::::  =  4.082676E-001 s
+       Currents_Slp_DFV_PD_V ::::::  =  3.655159E-001 s
+  Currents_Slp_DFV_PD_V_Clr :::::::  =  6.870630E-003 s
+     Currents_RmnnSlvr_Prpr :::::::  =  1.609511E-001 s
+urrents_RmnnSlvr_Rcnstrctn ::::::::  =  9.346987E-002 s
+Currents_RmnnSlvr_FrmPrmtv ::::::::  =  1.495500E-004 s
+ Currents_RmnnSlvr_Egnspds ::::::::  =  2.696083E-002 s
+   Currents_RmnnSlvr_Alpha ::::::::  =  3.526771E-002 s
+     Currents_RmnnSlvr_Cmpt :::::::  =  1.135864E-001 s
+     Currents_RmnnSlvr_Flx ::::::::  =  2.620455E-002 s
+Currents_RmnnSlvr_Krnl_HLL ::::::::  =  8.435320E-002 s
+ Currents_Slp_DFV_PD_V_Krnl :::::::  =  7.942920E-002 s
+      Currents_Slp_DFV_C_F_V ::::::  =  1.400594E-002 s
+urrents_Slp_DFV_C_F_V_Strss :::::::  =  1.295343E-002 s
+Currents_Slp_DFV_C_F_V_Krnl :::::::  =  0.000000E+000 s
+    Currents_Slp_DFV_F_DT_MA ::::::  =  2.616260E-002 s
+   Currents_Slp_DFV_F_DT_Ghst :::::  =  2.801940E-001 s
+       Currents_Stp_AccmltSlp :::::  =  1.045401E-001 s
+          Currents_Stp_StrSltn ::::  =  2.009493E-001 s
+         Currents_Stp_CpySltn :::::  =  6.839277E-003 s
+        Currents_Stp_FrmBlncd :::::  =  6.744100E-005 s
+     Currents_Stp_BndryCndtns :::::  =  1.918859E-001 s
+      Currents_Stp_IncrmntSltn ::::  =  9.364482E-003 s
+              Integrator_Chckpnt ::  =  1.237900E-004 s
+             Integrator_UpdtHst :::  =  8.637500E-005 s
+       INFO_2: Across processes mean timers
+                          Execution  =  1.610924E+000 s
+                 Integrator_Evltn :  =  1.181701E+000 s
+              Integrator_CmptCcl ::  =  1.180143E+000 s
+              Integrator_PprCcl :::  =  3.588400E-005 s
+              Integrator_CmptDt :::  =  5.096491E-002 s
+                   Currents_Stp :::  =  1.128101E+000 s
+           Currents_Stp_LdIntl ::::  =  3.999416E-003 s
+      Currents_Stp_IntlzIntmdt ::::  =  3.409942E-003 s
+    Currents_Stp_IncrmntIntmdt ::::  =  4.881344E-003 s
+          Currents_Stp_CmptStg ::::  =  8.542864E-001 s
+        Currents_Slp_DFV_F_DT :::::  =  4.221078E-001 s
+       Currents_Slp_DFV_PD_V ::::::  =  3.788066E-001 s
+  Currents_Slp_DFV_PD_V_Clr :::::::  =  6.984228E-003 s
+     Currents_RmnnSlvr_Prpr :::::::  =  1.630471E-001 s
+urrents_RmnnSlvr_Rcnstrctn ::::::::  =  9.447850E-002 s
+Currents_RmnnSlvr_FrmPrmtv ::::::::  =  1.570413E-004 s
+ Currents_RmnnSlvr_Egnspds ::::::::  =  2.754451E-002 s
+   Currents_RmnnSlvr_Alpha ::::::::  =  3.578080E-002 s
+     Currents_RmnnSlvr_Cmpt :::::::  =  1.154253E-001 s
+     Currents_RmnnSlvr_Flx ::::::::  =  2.669534E-002 s
+Currents_RmnnSlvr_Krnl_HLL ::::::::  =  8.571037E-002 s
+ Currents_Slp_DFV_PD_V_Krnl :::::::  =  8.862558E-002 s
+      Currents_Slp_DFV_C_F_V ::::::  =  1.413282E-002 s
+urrents_Slp_DFV_C_F_V_Strss :::::::  =  1.307598E-002 s
+Currents_Slp_DFV_C_F_V_Krnl :::::::  =  0.000000E+000 s
+    Currents_Slp_DFV_F_DT_MA ::::::  =  2.654799E-002 s
+   Currents_Slp_DFV_F_DT_Ghst :::::  =  3.240627E-001 s
+       Currents_Stp_AccmltSlp :::::  =  1.059163E-001 s
+          Currents_Stp_StrSltn ::::  =  2.484080E-001 s
+         Currents_Stp_CpySltn :::::  =  6.917287E-003 s
+        Currents_Stp_FrmBlncd :::::  =  6.969400E-005 s
+     Currents_Stp_BndryCndtns :::::  =  2.392585E-001 s
+      Currents_Stp_IncrmntSltn ::::  =  9.513445E-003 s
+              Integrator_Chckpnt ::  =  1.770943E-004 s
+             Integrator_UpdtHst :::  =  8.893600E-005 s
+     INFO_1: Significant mean timers
+                          Execution  =  1.610924E+000 s
+                 Integrator_Evltn :  =  1.181701E+000 s
+              Integrator_CmptCcl ::  =  1.180143E+000 s
+                   Currents_Stp :::  =  1.128101E+000 s
+          Currents_Stp_CmptStg ::::  =  8.542864E-001 s
+        Currents_Slp_DFV_F_DT :::::  =  4.221078E-001 s
+       Currents_Slp_DFV_PD_V ::::::  =  3.788066E-001 s
+     Currents_RmnnSlvr_Prpr :::::::  =  1.630471E-001 s
+   Currents_Slp_DFV_F_DT_Ghst :::::  =  3.240627E-001 s
+          Currents_Stp_StrSltn ::::  =  2.484080E-001 s
+     Currents_Stp_BndryCndtns :::::  =  2.392585E-001 s
+              Integrator_Chckpnt ::  =  1.770943E-004 s
+     INFO_1: Significant MAX - MEAN
+MAX - MEAN Currents_Slp_DFV_F_DT_Gh  =  5.461401E-002 s
+    MAX - MEAN Currents_Stp_StrSltn  =  4.876943E-002 s
+MAX - MEAN Currents_Stp_BndryCndtns  =  4.872351E-002 s
+     INFO_1: Program memory usage
+                   This process HWM  =  6.363520E+005 kB
+                   This process RSS  =  6.363520E+005 kB
+           Across processes max HWM  =  6.364800E+005 kB
+           Across processes min HWM  =  6.357760E+005 kB
+          Across processes mean HWM  =  6.362080E+005 kB
+           Across processes max RSS  =  6.364800E+005 kB
+           Across processes min RSS  =  6.357760E+005 kB
+          Across processes mean RSS  =  6.362080E+005 kB
+     INFO_1: Device memory info
+         This process device memory  =  1.694551E+004 MB
+    This process device memory used  =  1.293550E+003 MB
+    This process device memory free  =  1.565196E+004 MB
+     INFO_1: Initializing a Series_CS
+                               Name  =  Series
+     INFO_1: Initializing a GridImageStream
+                               Name  =  SphericalContraction_VLC_2D_Series
+                   WorkingDirectory  =  ../SphericalContraction_2D_SampleOutput/
+     INFO_1: Computing Tally
+     INFO_1: Interior Tally Currents
+                   Density_Integral  =  2.376850E+003 
+     INFO_1: Boundary Extent Tally Currents
+                   Density_Integral  = -5.420150E-175 
+     INFO_1: Total Tally Currents
+                   Density_Integral  =  2.376850E+003 
+     INFO_1: Change in Total Tally Currents
+                   Density_Integral  = -6.366463E-012 
+     INFO_1: Computing error
+                           FieldSet  =  Reference
+                           L1 Error
+                               ( 1 ) =  2.299797E-002
+                               ( 2 ) =  0.000000E+000
+                               ( 3 ) =  0.000000E+000
+                               ( 4 ) =  0.000000E+000
+     INFO_1: Recording Series data
+                               Name  =  Series
+                            iRecord  =         1
+                Execution per cycle  =  8.178195E-003 s
+         Integrator_Evltn per cycle  =  6.024099E-003 s
+       Integrator_CmptCcl per cycle  =  6.021322E-003 s
+        Integrator_PprCcl per cycle  =  2.279848E-007 s
+        Integrator_CmptDt per cycle  =  4.201125E-004 s
+             Currents_Stp per cycle  =  5.839694E-003 s
+      Currents_Stp_LdIntl per cycle  =  2.108175E-005 s
+ Currents_Stp_IntlzIntmdt per cycle  =  1.771386E-005 s
+Currents_Stp_IncrmntIntmdt per cycl  =  2.530676E-005 s
+     Currents_Stp_CmptStg per cycle  =  4.536410E-003 s
+    Currents_Slp_DFV_F_DT per cycle  =  2.215393E-003 s
+    Currents_Slp_DFV_PD_V per cycle  =  1.994341E-003 s
+Currents_Slp_DFV_PD_V_Clr per cycle  =  3.606150E-005 s
+   Currents_RmnnSlvr_Prpr per cycle  =  8.395573E-004 s
+urrents_RmnnSlvr_Rcnstrctn per cycl  =  4.872397E-004 s
+Currents_RmnnSlvr_FrmPrmtv per cycl  =  8.610914E-007 s
+Currents_RmnnSlvr_Egnspds per cycle  =  1.427929E-004 s
+  Currents_RmnnSlvr_Alpha per cycle  =  1.830381E-004 s
+   Currents_RmnnSlvr_Cmpt per cycle  =  5.963825E-004 s
+    Currents_RmnnSlvr_Flx per cycle  =  1.377038E-004 s
+Currents_RmnnSlvr_Krnl_HLL per cycl  =  4.433522E-004 s
+Currents_Slp_DFV_PD_V_Krnl per cycl  =  4.986070E-004 s
+   Currents_Slp_DFV_C_F_V per cycle  =  7.211615E-005 s
+urrents_Slp_DFV_C_F_V_Strss per cyc  =  6.672206E-005 s
+Currents_Slp_DFV_C_F_V_Krnl per cyc  = -0.000000E+000 s
+ Currents_Slp_DFV_F_DT_MA per cycle  =  1.358996E-004 s
+Currents_Slp_DFV_F_DT_Ghst per cycl  =  1.922217E-003 s
+   Currents_Stp_AccmltSlp per cycle  =  5.480758E-004 s
+     Currents_Stp_StrSltn per cycle  =  1.508515E-003 s
+     Currents_Stp_CpySltn per cycle  =  3.530244E-005 s
+    Currents_Stp_FrmBlncd per cycle  =  3.832893E-007 s
+ Currents_Stp_BndryCndtns per cycle  =  1.461838E-003 s
+ Currents_Stp_IncrmntSltn per cycle  =  4.953380E-005 s
+       Integrator_Chckpnt per cycle  =  1.684305E-006 s
+       Integrator_UpdtHst per cycle  =  4.600609E-007 s
+     INFO_1: Creating a GridImage file for writing
+                               Name  =  SphericalContraction_VLC_2D
+                             Number  =  _0000001
+     INFO_1: Writing a Stream
+                               Name  =  Stream_X
+     INFO_1: Closing a GridImage file
+                               Name  =  SphericalContraction_VLC_2D
+                             Number  =  _0000001
+     INFO_1: Creating a GridImage file for writing
+                               Name  =  SphericalContraction_VLC_2D_Series
+                             Number  =  
+     INFO_1: Writing a Series_CS
+                               Name  =  Series
+     INFO_1: Closing a GridImage file
+                               Name  =  SphericalContraction_VLC_2D_Series
+                             Number  =  
+     INFO_1: T_Finish reached
+     INFO_1: Finalizing a CurrentSet
+                               Name  =  Difference
+     INFO_1: Finalizing a CurrentSet
+                               Name  =  Reference
+       INFO_2: Finalizing an EigenspeedSet_F
+                               Name  =  Currents_Egnspd_1
+       INFO_2: Finalizing an EigenspeedSet_F
+                               Name  =  Currents_Egnspd_2
+       INFO_2: Finalizing an EigenspeedSet_F
+                               Name  =  Currents_Egnspd_3
+       INFO_2: Finalizing a SurfaceIntegral
+                               Name  =  TallyBoundary
+     INFO_1: Finalizing a FieldSet
+                               Name  =  Integrand_TallyInterior
+       INFO_2: Finalizing a VolumeIntegral
+                               Name  =  TallyInterior
+     INFO_1: Finalizing a CurrentSet
+                               Name  =  Currents
+     INFO_1: Finalizing a GridImageStream
+                               Name  =  SphericalContraction_VLC_2D_Series
+     INFO_1: Finalizing a Series_CS
+                               Name  =  Series
+     INFO_1: Finalizing a Reconstruction
+                               Name  =  Currents_Prmtv_Rcnstrctn
+       INFO_2: Finalizing an EigenspeedSet_F
+                               Name  =  Currents_IR_Egnspd
+       INFO_2: Finalizing an EigenspeedSet_F
+                               Name  =  Currents_IL_Egnspd
+       INFO_2: Finalizing a FieldSet
+                               Name  =  F_IR_Currents
+       INFO_2: Finalizing a FieldSet
+                               Name  =  F_IL_Currents
+       INFO_2: Finalizing a FieldSet
+                               Name  =  F_Currents
+       INFO_2: Finalizing a FieldSet
+                               Name  =  Currents_IR
+       INFO_2: Finalizing a FieldSet
+                               Name  =  Currents_IL
+       INFO_2: Finalizing a FieldSet
+                               Name  =  Currents_Prmtv
+     INFO_1: Finalizing a RiemannSolver_HLL
+                               Name  =  Currents_RmnnSlvr
+     INFO_1: Finalizing a DivergencePart_CS
+                               Name  =  V
+       INFO_2: Finalizing a FieldSet
+                               Name  =  Solution
+       INFO_2: Finalizing a FieldSet
+                               Name  =  Intermediate
+       INFO_2: Finalizing a FieldSet
+                               Name  =  Balanced
+       INFO_2: Finalizing a FieldSet
+                               Name  =  Slope_1
+       INFO_2: Finalizing a FieldSet
+                               Name  =  Slope_2
+       INFO_2: Finalizing a Slope_DFV_PD
+                               Name  =  Currents_Slp_DFV_PD_V
+       INFO_2: Finalizing a FieldSet
+                               Name  =  Stress_UD
+       INFO_2: Finalizing a Slope_DFV_C_F
+                               Name  =  Currents_Slp_DFV_C_F_V
+     INFO_1: Finalizing a Slope_DFV_F_DT
+                               Name  =  Currents_Slp_DFV_F_DT
+       INFO_2: Finalizing a Slope_DFV_PD
+                               Name  =  Currents_Slp_DFV_PD_V
+       INFO_2: Finalizing a FieldSet
+                               Name  =  Stress_UD
+       INFO_2: Finalizing a Slope_DFV_C_F
+                               Name  =  Currents_Slp_DFV_C_F_V
+     INFO_1: Finalizing a Slope_DFV_F_DT
+                               Name  =  Currents_Slp_DFV_F_DT
+     INFO_1: Finalizing a Step_RK_CS
+                               Name  =  Currents_Stp
+     INFO_1: Finalizing a Geometry_F
+                               Name  =  Geometry
+     INFO_1: Finalizing a Stream
+                               Name  =  Stream_X
+     INFO_1: Finalizing a Chart_GS_CC
+                               Name  =  X
+     INFO_1: Finalizing an Atlas_SCG_CC
+                               Name  =  X
+     INFO_1: Finalizing a GridImageStream
+                               Name  =  SphericalContraction_VLC_2D
+     INFO_1: Finalizing an Integrator_CS
+                               Name  =  Integrator
+     INFO_1: Finalizing an ImposedAdvection_VL
+     INFO_1: Finishing the Program
+                               Name  =  SphericalContraction_VLC_2D
+     INFO_1: Program timing
+       INFO_2: This process timers
+                          Execution  =  1.666066E+000 s
+                 Integrator_Evltn :  =  1.228221E+000 s
+              Integrator_CmptCcl ::  =  1.172095E+000 s
+              Integrator_PprCcl :::  =  4.491300E-005 s
+              Integrator_CmptDt :::  =  3.101195E-002 s
+                   Currents_Stp :::  =  1.139960E+000 s
+           Currents_Stp_LdIntl ::::  =  4.153104E-003 s
+      Currents_Stp_IntlzIntmdt ::::  =  3.397804E-003 s
+    Currents_Stp_IncrmntIntmdt ::::  =  4.862756E-003 s
+          Currents_Stp_CmptStg ::::  =  8.172375E-001 s
+        Currents_Slp_DFV_F_DT :::::  =  4.294278E-001 s
+       Currents_Slp_DFV_PD_V ::::::  =  3.858573E-001 s
+  Currents_Slp_DFV_PD_V_Clr :::::::  =  7.104115E-003 s
+     Currents_RmnnSlvr_Prpr :::::::  =  1.629210E-001 s
+urrents_RmnnSlvr_Rcnstrctn ::::::::  =  9.404563E-002 s
+Currents_RmnnSlvr_FrmPrmtv ::::::::  =  1.696350E-004 s
+ Currents_RmnnSlvr_Egnspds ::::::::  =  2.764028E-002 s
+   Currents_RmnnSlvr_Alpha ::::::::  =  3.593560E-002 s
+     Currents_RmnnSlvr_Cmpt :::::::  =  1.151219E-001 s
+     Currents_RmnnSlvr_Flx ::::::::  =  2.681478E-002 s
+Currents_RmnnSlvr_Krnl_HLL ::::::::  =  8.527756E-002 s
+ Currents_Slp_DFV_PD_V_Krnl :::::::  =  9.592318E-002 s
+      Currents_Slp_DFV_C_F_V ::::::  =  1.420688E-002 s
+urrents_Slp_DFV_C_F_V_Strss :::::::  =  1.314425E-002 s
+Currents_Slp_DFV_C_F_V_Krnl :::::::  =  0.000000E+000 s
+    Currents_Slp_DFV_F_DT_MA ::::::  =  2.668949E-002 s
+   Currents_Slp_DFV_F_DT_Ghst :::::  =  2.801940E-001 s
+       Currents_Stp_AccmltSlp :::::  =  1.053631E-001 s
+          Currents_Stp_StrSltn ::::  =  2.971774E-001 s
+         Currents_Stp_CpySltn :::::  =  6.937025E-003 s
+        Currents_Stp_FrmBlncd :::::  =  7.550800E-005 s
+     Currents_Stp_BndryCndtns :::::  =  2.879820E-001 s
+      Currents_Stp_IncrmntSltn ::::  =  9.440423E-003 s
+              Integrator_Chckpnt ::  =  5.168773E-002 s
+             Integrator_UpdtHst :::  =  8.829500E-005 s
+                Integrator_Anlz :::  =  9.732680E-004 s
+           Integrator_CmptTlly ::::  =  3.502910E-004 s
+            Integrator_StRfrnc ::::  =  3.662730E-004 s
+                    Series_Rcd ::::  =  2.473880E-004 s
+                 Integrator_Wrt :::  =  4.906124E-002 s
+                  Stream_X_Wrt ::::  =  2.912914E-002 s
+                    Series_Wrt ::::  =  1.992398E-002 s
+       INFO_2: Across processes max timers
+                          Execution  =  1.666066E+000 s
+                 Integrator_Evltn :  =  1.228221E+000 s
+              Integrator_CmptCcl ::  =  1.186200E+000 s
+              Integrator_PprCcl :::  =  4.491300E-005 s
+              Integrator_CmptDt :::  =  8.276216E-002 s
+                   Currents_Stp :::  =  1.150420E+000 s
+           Currents_Stp_LdIntl ::::  =  4.153104E-003 s
+      Currents_Stp_IntlzIntmdt ::::  =  3.489630E-003 s
+    Currents_Stp_IncrmntIntmdt ::::  =  4.985431E-003 s
+          Currents_Stp_CmptStg ::::  =  8.936728E-001 s
+        Currents_Slp_DFV_F_DT :::::  =  4.364324E-001 s
+       Currents_Slp_DFV_PD_V ::::::  =  3.928852E-001 s
+  Currents_Slp_DFV_PD_V_Clr :::::::  =  7.104115E-003 s
+     Currents_RmnnSlvr_Prpr :::::::  =  1.653928E-001 s
+urrents_RmnnSlvr_Rcnstrctn ::::::::  =  9.598622E-002 s
+Currents_RmnnSlvr_FrmPrmtv ::::::::  =  1.696350E-004 s
+ Currents_RmnnSlvr_Egnspds ::::::::  =  2.813020E-002 s
+   Currents_RmnnSlvr_Alpha ::::::::  =  3.605851E-002 s
+     Currents_RmnnSlvr_Cmpt :::::::  =  1.174874E-001 s
+     Currents_RmnnSlvr_Flx ::::::::  =  2.712766E-002 s
+Currents_RmnnSlvr_Krnl_HLL ::::::::  =  8.734039E-002 s
+ Currents_Slp_DFV_PD_V_Krnl :::::::  =  9.822559E-002 s
+      Currents_Slp_DFV_C_F_V ::::::  =  1.420688E-002 s
+urrents_Slp_DFV_C_F_V_Strss :::::::  =  1.314425E-002 s
+Currents_Slp_DFV_C_F_V_Krnl :::::::  =  0.000000E+000 s
+    Currents_Slp_DFV_F_DT_MA ::::::  =  2.677221E-002 s
+   Currents_Slp_DFV_F_DT_Ghst :::::  =  3.786767E-001 s
+       Currents_Stp_AccmltSlp :::::  =  1.079709E-001 s
+          Currents_Stp_StrSltn ::::  =  2.971774E-001 s
+         Currents_Stp_CpySltn :::::  =  6.954580E-003 s
+        Currents_Stp_FrmBlncd :::::  =  7.550800E-005 s
+     Currents_Stp_BndryCndtns :::::  =  2.879820E-001 s
+      Currents_Stp_IncrmntSltn ::::  =  9.758158E-003 s
+              Integrator_Chckpnt ::  =  5.168773E-002 s
+             Integrator_UpdtHst :::  =  9.063200E-005 s
+                Integrator_Anlz :::  =  9.750490E-004 s
+           Integrator_CmptTlly ::::  =  5.578000E-004 s
+            Integrator_StRfrnc ::::  =  3.900990E-004 s
+                    Series_Rcd ::::  =  2.473880E-004 s
+                 Integrator_Wrt :::  =  4.906124E-002 s
+                  Stream_X_Wrt ::::  =  2.912914E-002 s
+                    Series_Wrt ::::  =  1.992398E-002 s
+       INFO_2: Across processes min timers
+                          Execution  =  1.626616E+000 s
+                 Integrator_Evltn :  =  1.199574E+000 s
+              Integrator_CmptCcl ::  =  1.172095E+000 s
+              Integrator_PprCcl :::  =  3.199800E-005 s
+              Integrator_CmptDt :::  =  2.921796E-002 s
+                   Currents_Stp :::  =  1.102377E+000 s
+           Currents_Stp_LdIntl ::::  =  3.921420E-003 s
+      Currents_Stp_IntlzIntmdt ::::  =  3.350835E-003 s
+    Currents_Stp_IncrmntIntmdt ::::  =  4.823001E-003 s
+          Currents_Stp_CmptStg ::::  =  8.172375E-001 s
+        Currents_Slp_DFV_F_DT :::::  =  4.082676E-001 s
+       Currents_Slp_DFV_PD_V ::::::  =  3.655159E-001 s
+  Currents_Slp_DFV_PD_V_Clr :::::::  =  6.870630E-003 s
+     Currents_RmnnSlvr_Prpr :::::::  =  1.609511E-001 s
+urrents_RmnnSlvr_Rcnstrctn ::::::::  =  9.346987E-002 s
+Currents_RmnnSlvr_FrmPrmtv ::::::::  =  1.495500E-004 s
+ Currents_RmnnSlvr_Egnspds ::::::::  =  2.696083E-002 s
+   Currents_RmnnSlvr_Alpha ::::::::  =  3.526771E-002 s
+     Currents_RmnnSlvr_Cmpt :::::::  =  1.135864E-001 s
+     Currents_RmnnSlvr_Flx ::::::::  =  2.620455E-002 s
+Currents_RmnnSlvr_Krnl_HLL ::::::::  =  8.435320E-002 s
+ Currents_Slp_DFV_PD_V_Krnl :::::::  =  7.942920E-002 s
+      Currents_Slp_DFV_C_F_V ::::::  =  1.400594E-002 s
+urrents_Slp_DFV_C_F_V_Strss :::::::  =  1.295343E-002 s
+Currents_Slp_DFV_C_F_V_Krnl :::::::  =  0.000000E+000 s
+    Currents_Slp_DFV_F_DT_MA ::::::  =  2.616260E-002 s
+   Currents_Slp_DFV_F_DT_Ghst :::::  =  2.801940E-001 s
+       Currents_Stp_AccmltSlp :::::  =  1.045401E-001 s
+          Currents_Stp_StrSltn ::::  =  2.009493E-001 s
+         Currents_Stp_CpySltn :::::  =  6.839277E-003 s
+        Currents_Stp_FrmBlncd :::::  =  6.744100E-005 s
+     Currents_Stp_BndryCndtns :::::  =  1.918859E-001 s
+      Currents_Stp_IncrmntSltn ::::  =  9.364482E-003 s
+              Integrator_Chckpnt ::  =  1.294021E-002 s
+             Integrator_UpdtHst :::  =  8.637500E-005 s
+                Integrator_Anlz :::  =  8.099200E-004 s
+           Integrator_CmptTlly ::::  =  3.502910E-004 s
+            Integrator_StRfrnc ::::  =  3.662730E-004 s
+                    Series_Rcd ::::  =  1.724500E-005 s
+                 Integrator_Wrt :::  =  1.035423E-002 s
+                  Stream_X_Wrt ::::  =  1.034781E-002 s
+                    Series_Wrt ::::  =  2.500000E-007 s
+       INFO_2: Across processes mean timers
+                          Execution  =  1.643338E+000 s
+                 Integrator_Evltn :  =  1.210797E+000 s
+              Integrator_CmptCcl ::  =  1.180143E+000 s
+              Integrator_PprCcl :::  =  3.588400E-005 s
+              Integrator_CmptDt :::  =  5.096491E-002 s
+                   Currents_Stp :::  =  1.128101E+000 s
+           Currents_Stp_LdIntl ::::  =  3.999416E-003 s
+      Currents_Stp_IntlzIntmdt ::::  =  3.409942E-003 s
+    Currents_Stp_IncrmntIntmdt ::::  =  4.881344E-003 s
+          Currents_Stp_CmptStg ::::  =  8.542864E-001 s
+        Currents_Slp_DFV_F_DT :::::  =  4.221078E-001 s
+       Currents_Slp_DFV_PD_V ::::::  =  3.788066E-001 s
+  Currents_Slp_DFV_PD_V_Clr :::::::  =  6.984228E-003 s
+     Currents_RmnnSlvr_Prpr :::::::  =  1.630471E-001 s
+urrents_RmnnSlvr_Rcnstrctn ::::::::  =  9.447850E-002 s
+Currents_RmnnSlvr_FrmPrmtv ::::::::  =  1.570413E-004 s
+ Currents_RmnnSlvr_Egnspds ::::::::  =  2.754451E-002 s
+   Currents_RmnnSlvr_Alpha ::::::::  =  3.578080E-002 s
+     Currents_RmnnSlvr_Cmpt :::::::  =  1.154253E-001 s
+     Currents_RmnnSlvr_Flx ::::::::  =  2.669534E-002 s
+Currents_RmnnSlvr_Krnl_HLL ::::::::  =  8.571037E-002 s
+ Currents_Slp_DFV_PD_V_Krnl :::::::  =  8.862558E-002 s
+      Currents_Slp_DFV_C_F_V ::::::  =  1.413282E-002 s
+urrents_Slp_DFV_C_F_V_Strss :::::::  =  1.307598E-002 s
+Currents_Slp_DFV_C_F_V_Krnl :::::::  =  0.000000E+000 s
+    Currents_Slp_DFV_F_DT_MA ::::::  =  2.654799E-002 s
+   Currents_Slp_DFV_F_DT_Ghst :::::  =  3.240627E-001 s
+       Currents_Stp_AccmltSlp :::::  =  1.059163E-001 s
+          Currents_Stp_StrSltn ::::  =  2.484080E-001 s
+         Currents_Stp_CpySltn :::::  =  6.917287E-003 s
+        Currents_Stp_FrmBlncd :::::  =  6.969400E-005 s
+     Currents_Stp_BndryCndtns :::::  =  2.392585E-001 s
+      Currents_Stp_IncrmntSltn ::::  =  9.513445E-003 s
+              Integrator_Chckpnt ::  =  2.921967E-002 s
+             Integrator_UpdtHst :::  =  8.893600E-005 s
+                Integrator_Anlz :::  =  9.236297E-004 s
+           Integrator_CmptTlly ::::  =  4.562263E-004 s
+            Integrator_StRfrnc ::::  =  3.826588E-004 s
+                    Series_Rcd ::::  =  7.524675E-005 s
+                 Integrator_Wrt :::  =  2.671131E-002 s
+                  Stream_X_Wrt ::::  =  2.172333E-002 s
+                    Series_Wrt ::::  =  4.981204E-003 s
+     INFO_1: Significant mean timers
+                          Execution  =  1.643338E+000 s
+                 Integrator_Evltn :  =  1.210797E+000 s
+              Integrator_CmptCcl ::  =  1.180143E+000 s
+                   Currents_Stp :::  =  1.128101E+000 s
+          Currents_Stp_CmptStg ::::  =  8.542864E-001 s
+        Currents_Slp_DFV_F_DT :::::  =  4.221078E-001 s
+       Currents_Slp_DFV_PD_V ::::::  =  3.788066E-001 s
+   Currents_Slp_DFV_F_DT_Ghst :::::  =  3.240627E-001 s
+          Currents_Stp_StrSltn ::::  =  2.484080E-001 s
+     Currents_Stp_BndryCndtns :::::  =  2.392585E-001 s
+              Integrator_Chckpnt ::  =  2.921967E-002 s
+     INFO_1: Significant MAX - MEAN
+MAX - MEAN Currents_Slp_DFV_F_DT_Gh  =  5.461401E-002 s
+    MAX - MEAN Currents_Stp_StrSltn  =  4.876943E-002 s
+MAX - MEAN Currents_Stp_BndryCndtns  =  4.872351E-002 s
+     INFO_1: Program memory usage
+                   This process HWM  =  6.363520E+005 kB
+                   This process RSS  =  6.332160E+005 kB
+           Across processes max HWM  =  6.364800E+005 kB
+           Across processes min HWM  =  6.357760E+005 kB
+          Across processes mean HWM  =  6.362080E+005 kB
+           Across processes max RSS  =  6.336640E+005 kB
+           Across processes min RSS  =  6.332160E+005 kB
+          Across processes mean RSS  =  6.334560E+005 kB
+     INFO_1: Device memory info
+         This process device memory  =  1.694551E+004 MB
+    This process device memory used  =  1.285161E+003 MB
+    This process device memory free  =  1.566035E+004 MB
+     INFO_1: Finalizing a Communicator
+                               Name  =  World

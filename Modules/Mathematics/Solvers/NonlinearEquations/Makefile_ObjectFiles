@@ -1,3 +1,0 @@
-NONLINEAR_EQUATIONS = \
-  NonlinearEquations.o \
-  RootFinding_Form.o 

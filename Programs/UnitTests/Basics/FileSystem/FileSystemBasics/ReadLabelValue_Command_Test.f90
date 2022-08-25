@@ -1,6 +1,7 @@
 program ReadLabelValue_Command_Test
 
-  use VariableManagement
+  use ISO_FORTRAN_ENV
+  use Specifiers
   use Display
   use MessagePassing
   use ReadLabelValue_Command
@@ -18,17 +19,19 @@ program ReadLabelValue_Command_Test
   real ( KDR ), dimension ( 10 ) :: &
     ArrayRealValue, &
     ArrayRealUnitValue
-  type ( MeasuredValueForm ) :: &
-    ScalarMeasuredValue, &
+  type ( QuantityForm ) :: &
+    ScalarQuantity, &
     InputUnit
-  type ( MeasuredValueForm ), dimension ( 10 ) :: &
-    ArrayMeasuredValue, &
+  type ( QuantityForm ), dimension ( 10 ) :: &
+    ArrayQuantity, &
     ArrayInputUnit
   logical ( KDL ) :: &
     ScalarLogicalValue, &
     Success
   logical ( KDL ), dimension ( 10 ) :: &
     ArrayLogicalValue
+  character ( 5 ) :: &
+    Encoding
   character ( LDL ) :: &
     ScalarStringValue, &
     Label
@@ -40,13 +43,13 @@ program ReadLabelValue_Command_Test
     ScalarIntegerString, &
     ScalarRealString, &
     ScalarRealUnitString, &
-    ScalarMeasuredValueString, &
+    ScalarQuantityString, &
     ScalarLogicalString, &
     ScalarStringString, &
     ArrayIntegerString, &
     ArrayRealString, &
     ArrayRealUnitString, &
-    ArrayMeasuredValueString, &
+    ArrayQuantityString, &
     ArrayLogicalString, &
     ArrayStringString
   type ( CommunicatorForm ), allocatable :: &
@@ -56,21 +59,30 @@ program ReadLabelValue_Command_Test
   call C % Initialize ( )
   call CONSOLE % Initialize ( C % Rank )
 
+!-- Runtime error with CCE
+!  if ( KBCH == selected_char_kind ( 'ASCII' ) ) then
+!    open ( OUTPUT_UNIT, encoding = 'DEFAULT' )
+!  else if ( KBCH == selected_char_kind ( 'ISO_10646' ) ) then
+  if ( KBCH == selected_char_kind ( 'ISO_10646' ) ) then
+    Encoding = 'UTF-8'
+    open ( OUTPUT_UNIT, encoding = Encoding )
+  end if
+
   call UNIT % Initialize ( )
     
   CommentedString           = '!-- Commented string should not be read'
   ScalarIntegerString       = 'ScalarInteger=10'
   ScalarRealString          = 'ScalarReal=10.1'
   ScalarRealUnitString      = 'ScalarRealUnit=10.0~KILOMETER'
-  ScalarMeasuredValueString = 'ScalarMeasuredValue=20.0~KILOMETER'
+  ScalarQuantityString = 'ScalarQuantity=20.0~KILOMETER'
   ScalarLogicalString       = 'ScalarLogical=True'
   ScalarStringString        = 'ScalarString=Hello World'
   ArrayIntegerString        = 'ArrayInteger=10,20,30'
   ArrayRealString           = 'ArrayReal=10.5,20.5,30.5,40.5,50.5'
   ArrayRealUnitString  &
     = 'ArrayRealUnit=10.5~SECOND,20.5,30.5~MILLISECOND,40.5,50.5~MILLISECOND'
-  ArrayMeasuredValueString  &
-    = 'ArrayMeasuredValue=10.5~SECOND,20.5,30.5~MILLISECOND,40.5,' &
+  ArrayQuantityString  &
+    = 'ArrayQuantity=10.5~SECOND,20.5,30.5~MILLISECOND,40.5,' &
       // '50.5~MILLISECOND'
   ArrayLogicalString        = 'ArrayLogical=T,F,False,True,True,F'
   ArrayStringString         = 'ArrayString=Lorem, ipsum, dolor, sit, amet'
@@ -95,11 +107,11 @@ program ReadLabelValue_Command_Test
   call Show ( ScalarRealUnitValue, trim ( Label ) // ', program units' )
   
   call ReadLabelValue &
-         ( Label, ScalarMeasuredValue, ScalarMeasuredValueString, &
+         ( Label, ScalarQuantity, ScalarQuantityString, &
            InputUnitOption = InputUnit )
-  call Show ( ScalarMeasuredValue, InputUnit, trim ( Label ) // &
+  call Show ( ScalarQuantity, InputUnit, trim ( Label ) // &
               ' input units' )
-  call Show ( ScalarMeasuredValue, trim ( Label ) // ', program units' )
+  call Show ( ScalarQuantity, trim ( Label ) // ', program units' )
   
   call ReadLabelValue ( Label, ScalarLogicalValue, ScalarLogicalString )
   call Show ( ScalarLogicalValue, Label )
@@ -128,13 +140,13 @@ program ReadLabelValue_Command_Test
            trim ( Label ) // ', program units' )
   
   call ReadLabelValue &
-         ( Label, ArrayMeasuredValue, ArrayMeasuredValueString, &
+         ( Label, ArrayQuantity, ArrayQuantityString, &
            InputUnitOption = ArrayInputUnit, nValuesOption = nValues )
   call Show &
-         ( ArrayMeasuredValue ( : nValues ), ArrayInputUnit ( : nValues ), &
+         ( ArrayQuantity ( : nValues ), ArrayInputUnit ( : nValues ), &
            trim ( Label ) // ', input units' )
   call Show &
-         ( ArrayMeasuredValue ( : nValues ), &
+         ( ArrayQuantity ( : nValues ), &
            trim ( Label ) // ', program units' )
   
   call ReadLabelValue &

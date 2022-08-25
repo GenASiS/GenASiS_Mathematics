@@ -12,7 +12,7 @@ module ConservedFields_Template
       N_FIELDS_TEMPLATE    = 6, &
       N_VECTORS_TEMPLATE   = 0
 
-  type, public, extends ( VariableGroupForm ), abstract :: &
+  type, public, extends ( StorageForm ), abstract :: &
     ConservedFieldsTemplate
       integer ( KDI ) :: &
         N_PRIMITIVE = 0, &
@@ -31,13 +31,15 @@ module ConservedFields_Template
         iaConserved
       character ( LDL ) :: &
         Type = ''
-      type ( VariableGroupForm ), dimension ( 1 ) :: &
+      type ( StorageForm ), dimension ( 1 ) :: &
         Output
       type ( DistributedMeshForm ), pointer :: &
         DistributedMesh => null ( )
   contains
     procedure, public, pass :: &
       InitializeTemplate
+    procedure, public, pass :: &
+      SetOutputTemplate
     procedure ( ComputeInterface ), public, pass, deferred :: &
       ComputeConserved
     procedure ( ComputeInterface ), public, pass, deferred :: &
@@ -55,18 +57,20 @@ module ConservedFields_Template
 
   abstract interface 
 
-    subroutine ComputeInterface ( CF, Value )
+    subroutine ComputeInterface ( CF, Value, UseDeviceOption )
       use Basics
       import ConservedFieldsTemplate
       class ( ConservedFieldsTemplate ), intent ( inout ) :: &
         CF
       real ( KDR ), dimension ( :, : ), intent ( inout ) :: &
         Value
+      logical ( KDL ), intent ( in ), optional :: &
+        UseDeviceOption
     end subroutine ComputeInterface
     
     subroutine ApplyBoundaryConditionsInterface &
                  ( CF, ExteriorValue, InteriorValue, iDimension, iBoundary, &
-                   PrimitiveOnlyOption )
+                   PrimitiveOnlyOption, UseDeviceOption )
       use Basics
       import ConservedFieldsTemplate
       class ( ConservedFieldsTemplate ), intent ( inout ) :: &
@@ -79,10 +83,12 @@ module ConservedFields_Template
         iDimension, &
         iBoundary
       logical ( KDL ), intent ( in ), optional :: &
-        PrimitiveOnlyOption
+        PrimitiveOnlyOption, &
+        UseDeviceOption
     end subroutine ApplyBoundaryConditionsInterface
     
-    subroutine ComputeRawFluxesInterface ( CF, RawFlux, Value, iDimension )
+    subroutine ComputeRawFluxesInterface &
+                 ( CF, RawFlux, Value, iDimension, UseDeviceOption )
       use Basics
       import ConservedFieldsTemplate
       class ( ConservedFieldsTemplate ), intent ( inout ) :: &
@@ -93,10 +99,13 @@ module ConservedFields_Template
         Value
       integer ( KDI ), intent ( in ) :: &
         iDimension
+      logical ( KDL ), intent ( in ), optional :: &
+        UseDeviceOption
     end subroutine ComputeRawFluxesInterface
     
     subroutine ComputeRiemannSolverInputInterface &
-                 ( CF, Step, ValueInner, ValueOuter, iDimension )
+                 ( CF, Step, ValueInner, ValueOuter, iDimension, &
+                   UseDeviceOption )
       use Basics
       import ConservedFieldsTemplate    
       class ( ConservedFieldsTemplate ), intent ( inout ) :: &
@@ -108,6 +117,8 @@ module ConservedFields_Template
         ValueOuter
       integer ( KDI ), intent ( in ) :: &
         iDimension
+      logical ( KDL ), intent ( in ), optional :: &
+        UseDeviceOption
     end subroutine ComputeRiemannSolverInputInterface
     
   end interface
@@ -130,12 +141,12 @@ contains
       NameOption
     logical ( KDL ), intent ( in ), optional :: &
       ClearOption
-    type ( MeasuredValueForm ), dimension ( : ), intent ( in ), optional :: &
+    type ( QuantityForm ), dimension ( : ), intent ( in ), optional :: &
       UnitOption
     type ( Integer_1D_Form ), dimension ( : ), intent ( in ), optional ::&
       VectorIndicesOption
 
-    type ( MeasuredValueForm ), dimension ( : ), allocatable :: &
+    type ( QuantityForm ), dimension ( : ), allocatable :: &
       VariableUnit
     character ( LDL ), dimension ( : ), allocatable :: &
       Variable
@@ -150,7 +161,7 @@ contains
              VectorIndicesOption = VectorIndicesOption, &
              UnitOption = VariableUnit, VectorOption = VectorOption, &
              VariableOption = Variable, NameOption = NameOption, &
-             ClearOption = ClearOption )
+             ClearOption = ClearOption, PinnedOption = .true. )
     end associate !-- DM
     
     CF % DistributedMesh => DistributedMesh
@@ -163,12 +174,9 @@ contains
     class ( ConservedFieldsTemplate ), intent ( inout ) :: &
       CF
 
-    call CF % Output ( 1 ) % Initialize &
-           ( CF, iaSelectedOption = CF % iaPrimitive )
-
   end subroutine SetOutputTemplate
-
-
+  
+  
   subroutine InitializeBasics &
                ( CF, Variable, VariableUnit, VariableOption, NameOption, &
                  VariableUnitOption )
@@ -177,14 +185,14 @@ contains
       CF
     character ( LDL ), dimension ( : ), allocatable, intent ( out ) :: &
       Variable
-    type ( MeasuredValueForm ), dimension ( : ), allocatable, &
+    type ( QuantityForm ), dimension ( : ), allocatable, &
       intent ( out ) :: &
         VariableUnit
     character ( * ), dimension ( : ), intent ( in ), optional :: &
       VariableOption
     character ( * ), intent ( in ), optional :: &
       NameOption
-    type ( MeasuredValueForm ), dimension ( : ), intent ( in ), optional :: &
+    type ( QuantityForm ), dimension ( : ), intent ( in ), optional :: &
       VariableUnitOption
 
     integer ( KDI ) :: &

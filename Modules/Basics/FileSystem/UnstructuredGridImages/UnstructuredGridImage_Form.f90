@@ -4,7 +4,8 @@
 module UnstructuredGridImage_Form
   
   use iso_c_binding
-  use VariableManagement
+  use Specifiers
+  use DataManagement
   use Display
   use GridImageBasics
 
@@ -30,13 +31,13 @@ module UnstructuredGridImage_Form
     procedure, private, pass :: &
       WriteMesh
     procedure, private, pass :: &
-      WriteVariableGroup
+      WriteStorage
     procedure, public, pass :: &
       Read
     procedure, private, pass :: &
       ReadMesh
     procedure, private, pass :: &
-      ReadVariableGroup 
+      ReadStorage 
     procedure, public, pass :: &
       ClearGrid
     final :: &
@@ -65,7 +66,7 @@ contains
       nProperCells, &
       nGhostCells, &
       oValue
-    type ( MeasuredValueForm ), dimension ( : ), intent ( in ), optional :: &
+    type ( QuantityForm ), dimension ( : ), intent ( in ), optional :: &
       CoordinateUnitOption
 
     UGI % oValue      = oValue
@@ -133,7 +134,7 @@ contains
 
     class ( UnstructuredGridImageForm ), intent ( inout ) :: &
       GI
-    type ( MeasuredValueForm ), intent ( in ), optional :: &
+    type ( QuantityForm ), intent ( in ), optional :: &
       TimeOption
     integer ( KDI ), intent ( in ), optional :: &
       CycleNumberOption
@@ -151,31 +152,39 @@ contains
     
     call GI % WriteMesh ( TimeOption, CycleNumberOption )
     
-    call GI % WriteVariableGroup ( TimeOption, CycleNumberOption )
+    call GI % WriteStorage ( TimeOption, CycleNumberOption )
 
     call GI % Stream % ChangeDirectory ( WorkingDirectory )
     
   end subroutine Write 
   
   
-  subroutine Read ( GI, TimeOption, CycleNumberOption )
+  subroutine Read ( GI, StorageOnlyOption, TimeOption, CycleNumberOption )
   
     class ( UnstructuredGridImageForm ), intent ( inout ) :: &
       GI
-    type ( MeasuredValueForm ), intent ( out ), optional :: &
+    logical ( KDL ), intent ( in ), optional :: &
+      StorageOnlyOption
+    type ( QuantityForm ), intent ( out ), optional :: &
       TimeOption
     integer ( KDI ), intent ( out ), optional :: &
       CycleNumberOption
     
     integer ( KDI ) :: &
-      iG, &
+      iStrg, &
       nVariables 
+    logical ( KDL ) :: &
+      StorageOnly
     character ( LDL ), dimension ( : ), allocatable :: &
-      GroupName, &
+      StorageName, &
       VariableName
     character ( LDF ) :: &
       WorkingDirectory
-      
+    
+    StorageOnly = .false.
+    if ( present ( StorageOnlyOption ) ) &
+      StorageOnly = StorageOnlyOption
+    
     if ( .not. GI % Stream % IsReadable ( ) ) return
     
     WorkingDirectory = GI % Stream % CurrentDirectory
@@ -184,40 +193,44 @@ contains
       
     call GI % ReadHeader ( TimeOption, CycleNumberOption )
     
-    call GI % ReadMesh ( )
+    if ( .not. StorageOnly ) then
     
-    !-- prepare VariableGroup to read into
-    if ( GI % nVariableGroups == 0 ) then
-      call GI % Stream % ListContents ( ContentTypeOption = 'Directory' )
-      GI % nVariableGroups = size ( GI % Stream % ContentList )
-!-- FIXME: NAG 5.3.1 should support sourced allocation
-!      allocate ( GroupName, source = GI % Stream % ContentList )
-      allocate ( GroupName ( size ( GI % Stream % ContentList ) ) )
-      GroupName = GI % Stream % ContentList
-      do iG = 1, GI % nVariableGroups
-        if ( len_trim ( GroupName ( iG ) ) > 0 ) &
-          call GI % Stream % ChangeDirectory ( GroupName ( iG ) )
-        call GI % Stream % ListContents &
-               ( ContentTypeOption = 'UnstructuredGridVariable' )
-        if ( allocated ( VariableName ) ) deallocate ( VariableName )
-!        allocate ( VariableName, source = GI % Stream % ContentList )
-        allocate ( VariableName ( size ( GI % Stream % ContentList ) ) )
-        VariableName = GI % Stream % ContentList 
-        nVariables = size ( GI % Stream % ContentList )
-        if ( nVariables == 0 ) then
-          GI % nVariableGroups = 0
-        else
-          call GI % VariableGroup ( iG ) % Initialize &
-                 ( [ GI % nTotalCells, nVariables ], &
-                   VariableOption = VariableName, & 
-                   NameOption = GroupName ( iG ) )
-        end if
-        if ( len_trim ( GroupName ( iG ) ) > 0 ) &
-          call GI % Stream % ChangeDirectory ( '..' )
-      end do
-    end if
+      call GI % ReadMesh ( )
       
-    call GI % ReadVariableGroup ( )
+      !-- prepare Storage to read into
+      if ( GI % nStorages == 0 ) then
+        call GI % Stream % ListContents ( ContentTypeOption = 'Directory' )
+        GI % nStorages = size ( GI % Stream % ContentList )
+  !-- FIXME: NAG 5.3.1 should support sourced allocation
+  !      allocate ( StorageName, source = GI % Stream % ContentList )
+        allocate ( StorageName ( size ( GI % Stream % ContentList ) ) )
+        StorageName = GI % Stream % ContentList
+        do iStrg = 1, GI % nStorages
+          if ( len_trim ( StorageName ( iStrg ) ) > 0 ) &
+            call GI % Stream % ChangeDirectory ( StorageName ( iStrg ) )
+          call GI % Stream % ListContents &
+                 ( ContentTypeOption = 'UnstructuredGridVariable' )
+          if ( allocated ( VariableName ) ) deallocate ( VariableName )
+  !        allocate ( VariableName, source = GI % Stream % ContentList )
+          allocate ( VariableName ( size ( GI % Stream % ContentList ) ) )
+          VariableName = GI % Stream % ContentList 
+          nVariables = size ( GI % Stream % ContentList )
+          if ( nVariables == 0 ) then
+            GI % nStorages = 0
+          else
+            call GI % Storage ( iStrg ) % Initialize &
+                   ( [ GI % nTotalCells, nVariables ], &
+                     VariableOption = VariableName, & 
+                     NameOption = StorageName ( iStrg ) )
+          end if
+          if ( len_trim ( StorageName ( iStrg ) ) > 0 ) &
+            call GI % Stream % ChangeDirectory ( '..' )
+        end do
+      end if
+    
+    end if
+        
+    call GI % ReadStorage ( )
     
     call GI % Stream % ChangeDirectory ( WorkingDirectory )
 
@@ -248,7 +261,7 @@ contains
 
     nullify ( UGI % Stream )
 
-    if ( allocated ( UGI % VariableGroup ) ) deallocate ( UGI % VariableGroup )
+    if ( allocated ( UGI % Storage ) ) deallocate ( UGI % Storage )
 
     call UGI % ClearGrid ( )
 
@@ -259,7 +272,7 @@ contains
 
     class ( UnstructuredGridImageForm ), intent ( inout ) :: &
       UGI
-    type ( MeasuredValueForm ), intent ( in ), optional :: &
+    type ( QuantityForm ), intent ( in ), optional :: &
       TimeOption
     integer ( KDI ), intent ( in ), optional :: &
       CycleNumberOption
@@ -370,11 +383,11 @@ contains
   end subroutine WriteMesh
   
   
-  subroutine WriteVariableGroup ( UGI, TimeOption, CycleNumberOption )
+  subroutine WriteStorage ( UGI, TimeOption, CycleNumberOption )
 
     class ( UnstructuredGridImageForm ), intent ( inout ) :: &
       UGI
-    type ( MeasuredValueForm ), intent ( in ), optional :: &
+    type ( QuantityForm ), intent ( in ), optional :: &
       TimeOption
     integer ( KDI ), intent ( in ), optional :: &
       CycleNumberOption
@@ -382,7 +395,7 @@ contains
     integer ( KDI ) :: &
       iVrbl, &    !-- iVariable
       iS, &       !-- iSelected
-      iG, &       !-- iGroup
+      iStrg, &       !-- iStorage
       nSiloOptions, &
       Error, &
       SiloOptionList
@@ -393,23 +406,23 @@ contains
       
     SiloOptionList = DB_F77NULL
   
-    do iG = 1, UGI % nVariableGroups
+    do iStrg = 1, UGI % nStorages
   
-      associate ( VG => UGI % VariableGroup ( iG ) )
+      associate ( S => UGI % Storage ( iStrg ) )
     
-      call Show ( 'Writing a VariableGroup (unstructured)', CONSOLE % INFO_5 )
-      call Show ( iG, 'iGroup', CONSOLE % INFO_5 )
-      call Show ( VG % Name, 'Name', CONSOLE % INFO_5 )
+      call Show ( 'Writing a Storage (unstructured)', CONSOLE % INFO_5 )
+      call Show ( iStrg, 'iStorage', CONSOLE % INFO_5 )
+      call Show ( S % Name, 'Name', CONSOLE % INFO_5 )
 
-      call UGI % Stream % MakeDirectory ( VG % Name )
+      call UGI % Stream % MakeDirectory ( S % Name )
     
-      do iS = 1, VG % nVariables
+      do iS = 1, S % nVariables
       
-        iVrbl = VG % iaSelected ( iS )
+        iVrbl = S % iaSelected ( iS )
       
         call Show ( 'Writing a Variable (unstructured)', CONSOLE % INFO_6 )
         call Show ( iS, 'iSelected', CONSOLE % INFO_6 )
-        call Show ( VG % Variable ( iVrbl ), 'Name', CONSOLE % INFO_6 )
+        call Show ( S % Variable ( iVrbl ), 'Name', CONSOLE % INFO_6 )
 
         if ( UGI % nTotalCells > 0 ) then
         
@@ -418,7 +431,7 @@ contains
             nSiloOptions = nSiloOptions + 1
           if ( present ( CycleNumberOption ) ) &
             nSiloOptions = nSiloOptions + 1
-          if ( len_trim ( VG % Unit ( iVrbl ) % Label ) > 0 ) &
+          if ( len_trim ( S % Unit ( iVrbl ) % Label ) > 0 ) &
             nSiloOptions = nSiloOptions + 1
           
           if ( nSiloOptions > 0 ) &
@@ -430,60 +443,60 @@ contains
           if ( present ( CycleNumberOption ) ) &
             Error = DBADDIOPT &
                       ( SiloOptionList, DBOPT_CYCLE, CycleNumberOption )
-          if ( len_trim ( VG % Unit ( iVrbl ) % Label ) > 0 ) &
+          if ( len_trim ( S % Unit ( iVrbl ) % Label ) > 0 ) &
             Error = DBADDCOPT &
                       ( SiloOptionList, DBOPT_UNITS, &
-                        trim ( VG % Unit ( iVrbl ) % Label ), &
-                        len_trim ( VG % Unit ( iVrbl ) % Label ) )
+                        trim ( S % Unit ( iVrbl ) % Label ), &
+                        len_trim ( S % Unit ( iVrbl ) % Label ) )
                   
-          call Show ( trim ( VG % Variable ( iVrbl ) ), 'Variable', &
+          call Show ( trim ( S % Variable ( iVrbl ) ), 'Variable', &
                       CONSOLE % INFO_6 )
-          call Show ( VG % lVariable ( iVrbl ), 'lVariable', CONSOLE % INFO_6 )
+          call Show ( S % lVariable ( iVrbl ), 'lVariable', CONSOLE % INFO_6 )
           call Show ( trim ( MeshDirectory ) // 'Mesh', 'MeshDirectory', &
                       CONSOLE % INFO_6 )
           call Show ( len_trim ( MeshDirectory ) + 4, 'lDirectory', &
                       CONSOLE % INFO_6 )
           call Show ( nSiloOptions, 'nSiloOptions', CONSOLE % INFO_6 )
-          if ( len_trim ( VG % Unit ( iVrbl ) % Label ) > 0 ) then
-            call Show ( trim ( VG % Unit ( iVrbl ) % Label ), 'Unit', &
+          if ( len_trim ( S % Unit ( iVrbl ) % Label ) > 0 ) then
+            call Show ( trim ( S % Unit ( iVrbl ) % Label ), 'Unit', &
                         CONSOLE % INFO_6 )
-            call Show ( len_trim ( VG % Unit ( iVrbl ) % Label ), 'lUnit', &
+            call Show ( len_trim ( S % Unit ( iVrbl ) % Label ), 'lUnit', &
                         CONSOLE % INFO_6 )
           end if
 
           Error = DBPUTUV1 &
                     ( UGI % Stream % MeshBlockHandle, &
-                      trim ( VG % Variable ( iVrbl ) ), &
-                      VG % lVariable ( iVrbl ), &
+                      trim ( S % Variable ( iVrbl ) ), &
+                      S % lVariable ( iVrbl ), &
                       trim ( MeshDirectory ) // 'Mesh', &
                       len_trim ( MeshDirectory ) + 4, &
-                      VG % Value &
+                      S % Value &
                         ( UGI % oValue + 1 : UGI % oValue + UGI % nTotalCells, &
-                          iVrbl ) / VG % Unit ( iVrbl ) % Number, &
+                          iVrbl ) / S % Unit ( iVrbl ) % Number, &
                       UGI % nTotalCells, DB_F77NULL, 0, DB_DOUBLE, &
                       DB_ZONECENT, SiloOptionList, Error )
         
         else !-- UGI % nTotalCells == 0
       
-          call Show ( trim ( VG % Variable ( iVrbl ) ), 'Variable', &
+          call Show ( trim ( S % Variable ( iVrbl ) ), 'Variable', &
                       CONSOLE % INFO_6 )
-          call Show ( VG % lVariable ( iVrbl ), 'lVariable', CONSOLE % INFO_6 )
+          call Show ( S % lVariable ( iVrbl ), 'lVariable', CONSOLE % INFO_6 )
           call Show ( trim ( MeshDirectory ) // 'Mesh', 'MeshDirectory', &
                       CONSOLE % INFO_6 )
           call Show ( len_trim ( MeshDirectory ) + 4, 'lDirectory', &
                       CONSOLE % INFO_6 )
           call Show ( nSiloOptions, 'nSiloOptions', CONSOLE % INFO_6 )
-          if ( len_trim ( VG % Unit ( iVrbl ) % Label ) > 0 ) then
-            call Show ( trim ( VG % Unit ( iVrbl ) % Label ), 'Unit', &
+          if ( len_trim ( S % Unit ( iVrbl ) % Label ) > 0 ) then
+            call Show ( trim ( S % Unit ( iVrbl ) % Label ), 'Unit', &
                         CONSOLE % INFO_6 )
-            call Show ( len_trim ( VG % Unit ( iVrbl ) % Label ), 'lUnit', &
+            call Show ( len_trim ( S % Unit ( iVrbl ) % Label ), 'lUnit', &
                         CONSOLE % INFO_6 )
           end if
 
           Error = DBPUTUV1 &
                     ( UGI % Stream % MeshBlockHandle, &
-                      trim ( VG % Variable ( iVrbl ) ), &
-                  VG % lVariable ( iVrbl ), &
+                      trim ( S % Variable ( iVrbl ) ), &
+                  S % lVariable ( iVrbl ), &
                   trim ( MeshDirectory ) // 'Mesh', &
                   len_trim ( MeshDirectory ) + 4, &
                   [ tiny ( 1.0_KDR ) ], 1, DB_F77NULL, 0, DB_DOUBLE, &
@@ -507,11 +520,11 @@ contains
         end if
       
         call UGI % WriteMultiVariable  &
-               ( VG % Variable ( iVrbl ), TimeOption, CycleNumberOption )
+               ( S % Variable ( iVrbl ), TimeOption, CycleNumberOption )
       
       end do
     
-      call UGI % WriteVectorVariable ( VG )
+      call UGI % WriteVectorVariable ( S )
     
       call UGI % Stream % ChangeDirectory ( '../' )
     
@@ -519,8 +532,8 @@ contains
   
     end do
    
-  end subroutine WriteVariableGroup
-  
+  end subroutine WriteStorage
+    
   
   subroutine ReadMesh ( UGI )
     
@@ -585,7 +598,7 @@ contains
   end subroutine ReadMesh
   
   
-  subroutine ReadVariableGroup ( UGI ) 
+  subroutine ReadStorage ( UGI ) 
 
     class ( UnstructuredGridImageForm ), intent ( inout ) :: &
       UGI
@@ -593,8 +606,8 @@ contains
     integer ( KDI ) :: &
       iV, &      !-- iValue
       iVrbl, &   !-- iVariable
-      iG, &      !-- iSelected
-      iS, &      !-- iGroup
+      iStrg, &      !-- iSelected
+      iS, &      !-- iStorage
       iA, &      !-- iArray
       oV, &
       nProperCells
@@ -614,25 +627,25 @@ contains
 
     MeshDirectory = UGI % Stream % CurrentDirectory
   
-    do iG = 1, UGI % nVariableGroups
+    do iStrg = 1, UGI % nStorages
     
-      associate ( VG => UGI % VariableGroup ( iG ), &
+      associate ( S => UGI % Storage ( iStrg ), &
                   nDims => UGI % nDimensions )
   
-      call Show ( 'Reading a VariableGroup', CONSOLE % INFO_5 )
-      call Show ( iG, 'iGroup', CONSOLE % INFO_5 )
-      call Show ( VG % Name, 'Name', CONSOLE % INFO_5 )
+      call Show ( 'Reading a Storage', CONSOLE % INFO_5 )
+      call Show ( iStrg, 'iStorage', CONSOLE % INFO_5 )
+      call Show ( S % Name, 'Name', CONSOLE % INFO_5 )
 
-      if ( len_trim ( VG % Name ) > 0 ) &
-        call UGI % Stream % ChangeDirectory ( VG  % Name ) 
+      if ( len_trim ( S % Name ) > 0 ) &
+        call UGI % Stream % ChangeDirectory ( S  % Name ) 
     
       DB_File &
         = UGI % Stream % AccessSiloPointer ( UGI % Stream % MeshBlockHandle )
     
-      do iS = 1, VG % nVariables
+      do iS = 1, S % nVariables
       
-        iVrbl = VG % iaSelected ( iS )
-        VariableName = trim ( VG % Variable ( iVrbl ) ) // c_null_char
+        iVrbl = S % iaSelected ( iS )
+        VariableName = trim ( S % Variable ( iVrbl ) ) // c_null_char
 
         DB_UV_Handle = DB_GetUnstructuredVariable ( DB_File, VariableName )
         call c_f_pointer ( DB_UV_Handle, DB_UV )
@@ -651,8 +664,8 @@ contains
           !   DBPUTZL2 in WriteMesh where this assumption is also expressed 
           !   in the argument list)
           call Copy &
-                 ( VariableValue ( oV + 1 : ) * VG % Unit ( iVrbl ) % Number, &
-                   VG % Value &
+                 ( VariableValue ( oV + 1 : ) * S % Unit ( iVrbl ) % Number, &
+                   S % Value &
                      ( UGI % oValue + oV + 1 &
                          : UGI % oValue + oV + DB_UV % nElements, iVrbl ) )
         end do
@@ -661,7 +674,7 @@ contains
       
       end do
   
-      if ( len_trim ( VG % Name ) > 0 ) &
+      if ( len_trim ( S % Name ) > 0 ) &
         call UGI % Stream % ChangeDirectory ( '../' ) 
     
       end associate 
@@ -673,7 +686,7 @@ contains
     nullify ( DB_UV )
     
 
-  end subroutine ReadVariableGroup
+  end subroutine ReadStorage
 
 
 end module UnstructuredGridImage_Form

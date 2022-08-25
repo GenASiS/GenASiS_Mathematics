@@ -39,7 +39,7 @@ contains
 
     class ( PlaneWaveAdvectionTemplate ), intent ( inout ) :: &
       PWA
-    type ( MeasuredValueForm ), intent ( in ) :: &
+    type ( QuantityForm ), intent ( in ) :: &
       DensityUnit
 
     integer ( KDI ) :: &
@@ -50,7 +50,7 @@ contains
       Period
     real ( KDR ), dimension ( 3 ) :: &
       Wavenumber
-    type ( MeasuredValueForm ), dimension ( 3 ) :: &
+    type ( QuantityForm ), dimension ( 3 ) :: &
       VelocityUnit
 
     call PWA % Initialize ( PROGRAM_HEADER % Communicator )
@@ -62,6 +62,9 @@ contains
     type is ( PressurelessFluidForm )
 
     call PF % Initialize ( DM, NameOption = 'PressurelessFluid' )
+    call PF % AllocateDevice ( )
+
+    call DM % SetGhostExchange ( PF )
 
     nWavelengths = 0
     nWavelengths ( 1 : DM % nDimensions ) = 1

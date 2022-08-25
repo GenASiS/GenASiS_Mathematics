@@ -1,4 +1,0 @@
-ALGEBRA = \
-  Algebra.o \
-  MultiplyAdd_Command.o \
-  Add_Command.o

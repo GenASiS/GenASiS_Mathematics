@@ -12,9 +12,9 @@ module LatticeDynamics_Template
       integer ( KDI ) :: &
         nEquilibrateCycles, &
         TargetTemperatureInterval
-      type ( MeasuredValueForm ) :: &
+      type ( QuantityForm ) :: &
         EnergyUnit
-    type ( VariableGroupForm ) :: &
+    type ( StorageForm ) :: &
       Correlation
     type ( GridImageStreamForm ) :: &
       CorrelationImageStream
@@ -41,7 +41,7 @@ contains
 
     class ( LatticeDynamicsTemplate ), intent ( inout ) :: &
       LD
-    type ( MeasuredValueForm ), intent ( in ) :: &
+    type ( QuantityForm ), intent ( in ) :: &
       EnergyUnit, &
       TimeUnit
 
@@ -390,13 +390,13 @@ contains
       ( CF => LD % CorrelationFunction, &
         LP => LD % DistributedParticles )
     call CF % Initialize ( GIS ) 
-    call CF % SetGrid  &
+    call CF % SetGridWrite  &
            ( Directory = 'CorrelationFunction', &
              NodeCoordinate = LP % CorrelationBinEdge, &
              nProperCells = LP % nCorrelationBins, oValue = 0, &
              CoordinateUnitOption = LP % LengthUnit, &
              CoordinateLabelOption = 'r' )
-    call CF % AddVariableGroup ( LD % Correlation )
+    call CF % AddStorage ( LD % Correlation )
     call CF % Write ( )
     end associate !-- CF
 

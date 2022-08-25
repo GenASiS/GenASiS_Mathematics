@@ -1,4 +1,0 @@
-DERIVATIVES = \
-  Derivatives.o \
-  Gradient_Form.o \
-  Difference_Form.o

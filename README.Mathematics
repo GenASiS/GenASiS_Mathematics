@@ -1,0 +1,102 @@
+README: BUILDING GENASIS APPLICATIONS, EXAMPLES, AND/OR UNIT TESTS
+--------------------------------------------------------------------------
+
+A machine-specific Makefile is needed to build GenASiS programs. Several 
+sample Makefiles are provided under the subdirectory Build/Machines. 
+Minor modifications of one of the provided Makefiles that most
+approximates one's computing environment is often sufficient to get started. 
+The essential information needed includes the name of the compiler wrapper
+to compile MPI-based code (e.g. commonly 'mpif90' for Fortran), 
+compiler-specific flags for various debugging and optimization options, and
+the flags and locations to include and link with required third-party I/O 
+libraries Silo. 
+
+This version is compatible with Silo-4.10 and above. To use Silo with 
+GenASiS, the Fortran interface to Silo should be enabled (which it is by
+default). In the simplest case, one can build Silo to be used with GenASiS
+with the following commands inside the Silo distribution:
+> ./configure --enable-fortran
+> make
+> make install
+Silo's documentation (e.g. its INSTALL file) provides more complete
+information on building Silo.
+
+Once the machine-specific Makefile is set up, the environment variable 
+GENASIS_MACHINE has to be set to tell the GenASiS build system to use the 
+corresponding Makefile. For example, to use the Makefile for the GCC compiler
+on a Linux machine (i.e. Makefile_Linux_GCC), in a Bash Unix shell one can
+type:
+
+> export GENASIS_MACHINE=Linux_GCC
+
+In most common computing environments with a generic MPI library, the advection
+example problem described in the accompanying paper can then be built and 
+executed. For instance, these commands build all the examples:
+
+> cd Programs/Examples/Mathematics/ImposedAdvection/Executables
+> make PURPOSE=OPTIMIZE all
+> export OMP_NUM_THREADS=4
+> mpirun -np 8 ./RectangularContraction_VLC_POWER_XL
+
+(To compile in a manner that is unoptimized but useful for debuggers, 
+replace 'PURPOSE=OPTIMIZE' with 'PURPOSE=DEBUG'. Or omit it altogether; 
+in the absence of a specification of PURPOSE, the Makefile in 
+ImposedAdvection/Executables sets PURPOSE=DEBUG as a default.)
+
+In the above examples we explicitly set the number of OpenMP threads with
+the environmental variable OMP_NUM_THREADS. It is imperative to
+do so since the default number of threads varies among different compilers
+if this environmental variable is not set. When running with more than one
+OpenMP thread per MPI task, one must take care so that thread placement on
+the processors is set correctly to avoid unintended resource contention.
+ 
+By default the output files are written in the directory "Output"
+that resides on the same level as the "Executables" directory, but
+this can be changed with an optional 'OutputDirectory' command line
+option. 
+
+Unit test programs exercising individual GenASiS classes can similarly be
+built and executed inside the "Executables" directory of each leaf
+division of the code under "Programs/UnitTests". For example, the following 
+commands build and execute the unit test programs for classes in the 
+"Fields" division:
+
+> cd Programs/UnitTests/Mathematics/CauchyProblems/Fields/CurrentSets/Executables
+> make all
+> mpirun -np 1 [program_name]
+
+This blanket "make all" builds all the unit test targets in the Makefile
+fragment Programs/UnitTests/Mathematics/Solvers/Fields/Makefile_Fields. 
+Individual targets also can be built.
+
+GenASiS Mathematics has been tested with the recent versions of the following 
+compilers: GCC Fortran compiler (gfortran, part of GCC), Cray Compiler 
+Environment (CCE), IBM XL Fortran compiler. GenASiS Mathematics is written 
+in full compliance with the Fortran standard to enhance portability. Earlier
+release of this code can be found in [1].
+
+Sample Output 
+-------------- 
+A sample output from a 2D run of SphericalContraction example problem is provided. 
+The following commands were used to generate the output on OLCF Summit system. 
+
+
+> cd Programs/Examples/Mathematics/ImposedAdvection/Executables
+> export GENASIS_MACHINE=POWER_XL 
+> make PURPOSE=OPTIMIZE SphericalContraction_VLC 
+> export OMP_NUM_THREADS=7
+> jsrun -n 4 -g 1 -c 7 --bind packed:7  --smpiargs="-gpu" \
+./SphericalContraction_VLC_POWER_XL \
+Dimensionality=2D nCellsPolar=128 Verbosity=INFO_2 nWrite=1 \
+OutputDirectory=../SphericalContraction_2D_SampleOutput/ \
+  |& tee SphericalContraction_2D_SampleOutput.STDOUT
+
+The file "SphericalContraction_2D_SampleOutput.STDOUT" is then copied to the 
+SphericalContraction_2D_SampleOutput/ directory 
+
+
+Authors:
+Christian Cardall (cardallcy@ornl.gov)
+Reuben Budiardja (reubendb@ornl.gov)
+
+[1] https://doi.org/10.1016/j.cpc.2017.10.004

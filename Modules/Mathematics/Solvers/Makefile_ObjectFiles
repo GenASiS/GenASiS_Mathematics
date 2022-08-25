@@ -1,9 +1,0 @@
-include $(PATH_EVOLUTIONS)/Makefile_ObjectFiles
-include $(PATH_FIELDS)/Makefile_ObjectFiles
-include $(PATH_NONLINEAR_EQUATIONS)/Makefile_ObjectFiles
-
-SOLVERS = \
-  Solvers.o \
-  $(EVOLUTIONS) \
-  $(FIELDS) \
-  $(NONLINEAR_EQUATIONS)

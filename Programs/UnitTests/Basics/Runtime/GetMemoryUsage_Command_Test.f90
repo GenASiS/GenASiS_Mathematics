@@ -1,18 +1,23 @@
 program GetMemoryUsage_Command_Test
 
-  use VariableManagement
+  use Specifiers
+  use DataManagement
   use Display
   use MessagePassing
   use CommandLineOptions_Form
+  use MemoryUsage_C_macOS
   use GetMemoryUsage_Command
 
   implicit none
   
   integer ( KDI ) :: &
-    iG, &
+    iStrg, &
     nValues, &
     DisplayRank
-  type ( MeasuredValueForm ) :: &
+  double precision, target :: &
+    HWM_kB, &
+    RSS_kB
+  type ( QuantityForm ) :: &
     HighWaterMark, &
     AcrossProcessesMinHighWaterMark, &
     AcrossProcessesMaxHighWaterMark, &
@@ -21,7 +26,7 @@ program GetMemoryUsage_Command_Test
     AcrossProcessesMinResidentSetSize, &
     AcrossProcessesMaxResidentSetSize, &
     AcrossProcessesMeanResidentSetSize
-  type ( VariableGroupForm ), dimension ( 10 ) :: &
+  type ( StorageForm ), dimension ( 10 ) :: &
     Dummy
   type ( CommunicatorForm ), allocatable :: &
     C
@@ -44,9 +49,9 @@ program GetMemoryUsage_Command_Test
   call CLO % Read ( nValues, 'nValues' )
   call Show ( nValues, 'nValues' )
   
-  do iG = 1, size ( Dummy ) 
-    call Dummy ( iG ) % Initialize ( [ nValues, C % Rank + 1 ] )
-    call random_number ( Dummy ( iG ) % Value )
+  do iStrg = 1, size ( Dummy ) 
+    call Dummy ( iStrg ) % Initialize ( [ nValues, C % Rank + 1 ] )
+    call random_number ( Dummy ( iStrg ) % Value )
   end do
   
   !-- get memory usage

@@ -5,7 +5,7 @@
 module CollectiveOperation_Template
 
   use MPI
-  use VariableManagement
+  use Specifiers
   use MessagePassingBasics
 
   implicit none
@@ -21,6 +21,8 @@ module CollectiveOperation_Template
     integer ( KDI ), dimension ( : ), allocatable :: &
       nIncoming, &
       nOutgoing
+    logical ( KDL ) :: &
+      AllocatedDevice = .false.
     type ( CommunicatorForm ), pointer :: &
       Communicator => null ( )
   contains
@@ -31,7 +33,7 @@ module CollectiveOperation_Template
 contains
 
   
-  subroutine InitializeTemplate ( CO, C, nIncoming, nOutgoing, RootOption )
+  subroutine InitializeTemplate ( CO, C, nOutgoing, nIncoming, RootOption )
   
     class ( CollectiveOperationTemplate ), intent ( inout ) :: &
       CO

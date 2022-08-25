@@ -2,7 +2,7 @@ PATH_GENASIS = ../../../../..
 
 include $(PATH_GENASIS)/Build/Makefile_Build
 
-all: FileDifference
+all: FileDifference DirectoryDifference GatherMeshBlocksMinMaxAve
 
 FileDifference: Basics.a FileDifference.o
 	$(LINK) $(FLAGS) \
@@ -10,11 +10,24 @@ FileDifference: Basics.a FileDifference.o
           FileDifference.o L1_Norm_Function.o \
           Basics.a $(LIBRARIES)
 
+DirectoryDifference: Basics.a DirectoryDifference.o
+	$(LINK) $(FLAGS) \
+          -o DirectoryDifference_$(MACHINE) \
+          DirectoryDifference.o L1_Norm_Function.o \
+          Basics.a $(LIBRARIES)
+
+GatherMeshBlocksMinMaxAve: Basics.a GatherMeshBlocksMinMaxAve.o
+	$(LINK) $(FLAGS) \
+          -o GatherMeshBlocksMinMaxAve_$(MACHINE) \
+          GatherMeshBlocksMinMaxAve.o Basics.a $(LIBRARIES)
+
 clean:
-	rm -f *.o *.mod *.ld
+	rm -f *.o *.mod *.ld *.a
 
 clobber: clean
-	rm -f FileDifference_*
+	find . -type f -executable -name 'FileDifference_*' -exec rm -f '{}' \;
+	find . -type f -executable -name 'DirectoryDifference_*' -exec rm -f '{}' \;
+	find . -type f -executable -name 'GatherMeshBlocksMinMaxAve_*' -exec rm -f '{}' \;
 
 include $(PATH_BASICS)/Makefile_Dependencies
 
@@ -25,3 +38,12 @@ FileDifference.o: \
   Basics.o \
   L1_Norm_Function.o \
   FileDifference.f90
+
+DirectoryDifference.o: \
+  Basics.o \
+  L1_Norm_Function.o \
+  DirectoryDifference.f90
+
+GatherMeshBlocksMinMaxAve.o: \
+  Basics.o \
+  GatherMeshBlocksMinMaxAve.f90

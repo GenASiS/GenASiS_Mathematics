@@ -19,7 +19,7 @@ module ParticleDynamics_Template
       TimeScaleMin
     real ( KDR ), dimension ( : ), allocatable :: &
       TimeValue
-    type ( MeasuredValueForm ) :: &
+    type ( QuantityForm ) :: &
       TimeUnit
     real ( KDR ), dimension ( : ), allocatable :: &
       PotentialValue, &
@@ -28,7 +28,7 @@ module ParticleDynamics_Template
       ForceValue
     character ( LDL ) :: &
       Type = ''
-    type ( VariableGroupForm ) :: &
+    type ( StorageForm ) :: &
       Extensive, &
       Intensive
     type ( GridImageStreamForm ) :: &
@@ -118,7 +118,7 @@ contains
 
     class ( ParticleDynamicsTemplate ), intent ( inout ) :: &
       PD
-    type ( MeasuredValueForm ), intent ( in ) :: &
+    type ( QuantityForm ), intent ( in ) :: &
       TimeUnit
 
     character ( LDL ) :: &
@@ -176,25 +176,27 @@ contains
     integer ( KDI ) :: &
       iC, &  !-- iCycle
       iTimerComputation
-    type ( VariableGroupForm ), dimension ( 1 ) :: &
-      VGP
+    type ( StorageForm ), dimension ( 1 ) :: &
+      SP
+    type ( TimerForm ), pointer :: &
+      T_C
 
-    call PROGRAM_HEADER % AddTimer &
-           ( 'Computational', iTimerComputation, Level = 1 )
+    iTimerComputation  =  0
+    T_C  =>  PROGRAM_HEADER % Timer &
+               ( iTimerComputation, 'Computational', Level = 1 )
 
     call Show ( 'Evolving particles', CONSOLE % INFO_1 )
 
     associate &
       ( DP => PD % DistributedParticles, &
-        MP => PD % DistributedParticles % MyParticles, &
-        T => PROGRAM_HEADER % Timer ( iTimerComputation ) )
+        MP => PD % DistributedParticles % MyParticles )
 
     PD % Time = 0.0_KDR
     call Show ( PD % Time, PD % TimeUnit, 'Time', CONSOLE % INFO_2 )
 
     call PD % SetExtensiveIntensive ( )
-    call VGP ( 1 ) % Initialize ( MP )
-    call DP % SetImage ( VGP, VGP, PROGRAM_HEADER % Name )
+    call SP ( 1 ) % Initialize ( MP )
+    call DP % SetImage ( SP, SP, PROGRAM_HEADER % Name )
 
     PD % TimeValue ( 0 ) = PD % Time
     call ComputeForce ( PD )  !-- needed to get initial potential energy
@@ -203,7 +205,7 @@ contains
            ( TimeOption = PD % Time / PD % TimeUnit, &
              CycleNumberOption = PD % iCycle )
 
-    call T % Start ( ) 
+    call T_C % Start ( ) 
 
     do iC = 1, PD % nCycles
 
@@ -222,7 +224,7 @@ contains
 
       if ( mod ( iC, PD % WriteCycleInterval ) == 0 ) then
 
-        call T % Stop ( )
+        call T_C % Stop ( )
 
         call DP % Write &
                ( TimeOption = PD % Time / PD % TimeUnit, &
@@ -231,13 +233,13 @@ contains
         call Show ( PD % iCycle, 'iCycle', CONSOLE % INFO_1 )
         call Show ( PD % Time, PD % TimeUnit, 'Time', CONSOLE % INFO_1 )
 
-        call T % Start ( )
+        call T_C % Start ( )
         
       end if
 
     end do
 
-    call T % Stop ( )
+    call T_C % Stop ( )
     
     call WriteTimeSeries ( PD )
 
@@ -286,14 +288,14 @@ contains
 
     associate ( TS => PD % TimeSeries )
     call TS % Initialize ( GIS ) 
-    call TS % SetGrid  &
+    call TS % SetGridWrite &
            ( Directory = 'TimeSeries', &
              NodeCoordinate = PD % TimeValue, &
              nProperCells = size ( PD % TimeValue ), oValue = 0, &
              CoordinateUnitOption = PD % TimeUnit, &
              CoordinateLabelOption = 't' )
-    call TS % AddVariableGroup ( PD % Extensive )
-    call TS % AddVariableGroup ( PD % Intensive )
+    call TS % AddStorage ( PD % Extensive )
+    call TS % AddStorage ( PD % Intensive )
     call TS % Write ( )
     end associate !-- TS
 

@@ -3,8 +3,10 @@
 
 module Message_Template
 
+  use iso_c_binding
   use MPI
-  use VariableManagement
+  use Specifiers
+  use Devices
   use MessagePassingBasics
 
   implicit none
@@ -22,12 +24,19 @@ module Message_Template
       Dummy
     logical ( KDL ) :: &
       Initialized = .false., &
-      AllocatedValue = .false.
+      AllocatedValue = .false., &
+      AllocatedDevice = .false.
+    type ( c_ptr ) :: &
+      D_Value
     type ( CommunicatorForm ), pointer :: &
       Communicator => null ( )
   contains
     procedure, public, pass :: &
       InitializeTemplate
+    procedure, private, pass :: &
+      AllocateDevice_M
+    generic, public :: &
+      AllocateDevice => AllocateDevice_M
     procedure, public, pass :: &
       Wait
   end type MessageTemplate
@@ -51,11 +60,23 @@ contains
     M % Tag  = Tag
     
     M % Initialized    = .true.
+    
     M % AllocatedValue = .true.
-    if ( present ( AllocatedOption ) ) M % AllocatedValue = AllocatedOption
+    if ( present ( AllocatedOption ) ) &
+      M % AllocatedValue = AllocatedOption
+    
+    M % D_Value        =  c_null_ptr
     M % Communicator   => C
 
   end subroutine InitializeTemplate
+  
+  
+  subroutine AllocateDevice_M ( M )
+    
+    class ( MessageTemplate ), intent ( inout ), target :: &
+      M
+    
+  end subroutine AllocateDevice_M
   
   
   subroutine Wait ( M )
@@ -66,6 +87,6 @@ contains
     call MPI_WAIT ( M % Handle, MPI_STATUS_IGNORE, M % Error )
 
   end subroutine Wait
-
-
+  
+  
 end module Message_Template

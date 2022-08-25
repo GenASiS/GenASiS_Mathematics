@@ -1,7 +1,8 @@
 program Show_Command_Test
 
-  use ISO_FORTRAN_ENV
-  use VariableManagement
+  use iso_fortran_env
+  use iso_c_binding
+  use Specifiers
   use CONSOLE_Singleton
   use Show_Command
 
@@ -10,12 +11,26 @@ program Show_Command_Test
   include 'mpif.h'
 
   integer ( KDI ) :: &
+    iV, &
     Rank, &
     Error
-  type ( MeasuredValueForm ) :: &
+  character ( 5 ) :: &
+    Encoding
+  type ( QuantityForm ) :: &
     Length
+  real ( KDR ), dimension ( 5 ), target :: &
+    A
+  type ( c_ptr ), dimension ( 5 ) :: &
+    Addresses
 
-  open ( OUTPUT_UNIT, encoding = 'UTF-8' )
+!-- Runtime error with CCE
+!  if ( KBCH == selected_char_kind ( 'ASCII' ) ) then
+!    open ( OUTPUT_UNIT, encoding = 'DEFAULT' )
+!  else if ( KBCH == selected_char_kind ( 'ISO_10646' ) ) then
+  if ( KBCH == selected_char_kind ( 'ISO_10646' ) ) then
+    Encoding = 'UTF-8'
+    open ( OUTPUT_UNIT, encoding = Encoding )
+  end if
 
   call MPI_INIT ( Error )
   call MPI_COMM_RANK ( MPI_COMM_WORLD, Rank, Error )
@@ -62,6 +77,13 @@ program Show_Command_Test
   call Show ( Length, UNIT % SECOND,  'Length in second' )
   call Show ( spread ( Length % Number, 1, 10 ), UNIT % PARSEC, &
               'Length in pc' )
+  
+  Addresses = [ ( c_loc ( A ( iV ) ), iV = 1, size ( A ) ) ]
+  call SHow ( Addresses, 'Elements of A' )
+  !-- FIXME: This breaks on GCC 11.3.0. For some reason it does not resolve
+  !          to Show_C_Pointer, but to Show_C_Pointer_1D, where it causes
+  !          a seg fault.
+  call Show ( c_loc ( A ), 'Address of A' )
   
   call MPI_FINALIZE ( Error )
 

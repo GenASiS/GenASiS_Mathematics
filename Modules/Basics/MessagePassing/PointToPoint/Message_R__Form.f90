@@ -3,8 +3,10 @@
 
 module Message_R__Form
 
+  use iso_c_binding
   use MPI
-  use VariableManagement
+  use Specifiers
+  use Devices
   use MessagePassingBasics
   use Message_Template
 
@@ -21,6 +23,8 @@ module Message_R__Form
       InitializeAssociate
     generic :: &
       Initialize => InitializeAllocate, InitializeAssociate
+    procedure, private, pass :: &
+      AllocateDevice_M
     final :: &
       Finalize
   end type Message_R_Form
@@ -65,17 +69,48 @@ contains
     call M % InitializeTemplate ( C, Tag, Rank, AllocatedOption = .false. )
 
     M % Value => Value
-  
+    
   end subroutine InitializeAssociate
   
   
-  elemental subroutine Finalize ( M )
+  subroutine AllocateDevice_M ( M )
+    
+    class ( Message_R_Form ), intent ( inout ), target :: &
+      M
+    
+    if ( M % AllocatedDevice ) &
+      return
+     
+    if ( M % AllocatedValue ) then
+      call AllocateDevice ( M % Value, M % D_Value )
+      call AssociateHost ( M % D_Value, M % Value )
+    else
+      if ( OnDevice ( M % Value ) ) &
+        M % D_Value = DeviceAddress ( M % Value )
+    end if
+    
+    M % AllocatedDevice = .true.
+    
+  end subroutine AllocateDevice_M
+  
+  
+  impure elemental subroutine Finalize ( M )
 
     type ( Message_R_Form ), intent ( inout ) :: &
       M 
       
+    if ( M % AllocatedDevice .and. M % AllocatedValue ) then
+      call DisassociateHost ( M % Value )
+      call DeallocateDevice ( M % D_Value )
+    else 
+      M % D_Value = c_null_ptr
+    end if
+    M % AllocatedDevice = .false.
+    
     if ( M % AllocatedValue ) then
-      if ( associated ( M % Value ) ) deallocate ( M % Value )
+      if ( associated ( M % Value ) ) &
+        deallocate ( M % Value )
+      M % AllocatedValue = .false.
     end if
     nullify ( M % Value )
 

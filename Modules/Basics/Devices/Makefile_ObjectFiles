@@ -1,0 +1,28 @@
+ifeq ($(DEVICE_CUDA), 1)
+  Device_Interface = Device_CUDA
+endif
+
+ifeq ($(DEVICE_HIP), 1)
+  Device_Interface = Device_HIP
+endif
+
+DEVICES = \
+  Devices.o \
+  GetDeviceMemoryInfo_Command.o \
+  NumberOfDevices_Function.o \
+  DeviceAddress_Function.o \
+  OnDevice_Function.o \
+  DeallocateHost_Command.o \
+  AllocateHost_Command.o \
+  UpdateHost_Command.o \
+  UpdateDevice_Command.o \
+  DisassociateHost_Command.o \
+  DeallocateDevice_Command.o \
+  AssociateHost_Command.o \
+  AllocateDevice_Command.o \
+  SelectedDevice_Function.o \
+  SelectDevice_Command.o \
+  OffloadEnabled_Function.o \
+  Device_C_OMP.o \
+  $(Device_Interface).o \
+  Device_OMP.o

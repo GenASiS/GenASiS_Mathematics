@@ -30,7 +30,7 @@ module DistributedParticles_Form
       nMyParticles, &
       nCorrelationBins
     integer ( KDI ), private :: &
-      iTimer_IO
+      iTimer_IO = 0
     real ( KDR ) :: &
       BoxLength, &
       ParticleMass
@@ -38,7 +38,7 @@ module DistributedParticles_Form
       CorrelationBinEdge, &
       MyPairCount, &
       PairCount
-    type ( MeasuredValueForm ) :: &
+    type ( QuantityForm ) :: &
       LengthUnit, &
       MassUnit
     real ( KDR ), dimension ( :, : ), allocatable :: &
@@ -102,7 +102,7 @@ contains
       ParticleMass
     integer ( KDI ), intent ( in ) :: &
       nParticles
-    type ( MeasuredValueForm ), intent ( in ), optional :: &
+    type ( QuantityForm ), intent ( in ), optional :: &
       LengthUnitOption, &
       TimeUnitOption
 
@@ -309,26 +309,28 @@ contains
   end function MyAngularMomentum
 
 
-  subroutine SetImage ( DP, VG_P, VG_V, Name )
+  subroutine SetImage ( DP, S_P, S_V, Name )
 
     class ( DistributedParticlesForm ), intent ( inout ) :: &
       DP
-    class ( VariableGroupForm ), dimension ( : ), intent ( in ) :: &
-      VG_P, &
-      VG_V
+    class ( StorageForm ), dimension ( : ), intent ( in ) :: &
+      S_P, &
+      S_V
     character ( * ), intent ( in ) :: &
       Name
 
     integer ( KDI ) :: &
-      iVG  !-- iVariableGroup
+      iS  !-- iStorage
     character ( LDF ) :: &
       OutputDirectory
+    type ( TimerForm ), pointer :: &
+      T_IO
 
     OutputDirectory = '../Output/'
     call PROGRAM_HEADER % GetParameter ( OutputDirectory, 'OutputDirectory' )    
-    call PROGRAM_HEADER % AddTimer ( 'InputOutput', DP % iTimer_IO, Level = 1 )
-    
-    call PROGRAM_HEADER % Timer ( DP % iTimer_IO ) % Start ( )
+    T_IO  =>  PROGRAM_HEADER % Timer &
+                ( DP % iTimer_IO, 'InputOutput', Level = 1 )
+    call T_IO % Start ( )
 
     associate ( GIS => DP % GridImageStream )
     call GIS % Initialize &
@@ -338,22 +340,22 @@ contains
 
     associate ( GIP => DP % GridImagePosition )
     call GIP % Initialize ( GIS ) 
-    do iVG = 1, size ( VG_P )
-      call GIP % AddVariableGroup ( VG_P ( iVG ) )
+    do iS = 1, size ( S_P )
+      call GIP % AddStorage ( S_P ( iS ) )
     end do
     end associate !-- GIP
 
     associate ( GIPB => DP % GridImagePositionBox )
     call GIPB % Initialize ( GIS ) 
-    do iVG = 1, size ( VG_P )
-      call GIPB % AddVariableGroup ( VG_P ( iVG ) )
+    do iS = 1, size ( S_P )
+      call GIPB % AddStorage ( S_P ( iS ) )
     end do
     end associate !-- GIPB
 
     associate ( GIV => DP % GridImageVelocity )
     call GIV % Initialize ( GIS ) 
-    do iVG = 1, size ( VG_V )
-      call GIV % AddVariableGroup ( VG_V ( iVG ) )
+    do iS = 1, size ( S_V )
+      call GIV % AddStorage ( S_V ( iS ) )
     end do
     end associate !-- GIV
 
@@ -361,7 +363,7 @@ contains
 
     end associate !-- GIS
 
-    call PROGRAM_HEADER % Timer ( DP % iTimer_IO ) % Stop ( )
+    call T_IO % Stop ( )
 
   end subroutine SetImage
 
@@ -370,12 +372,18 @@ contains
 
     class ( DistributedParticlesForm ), intent ( inout ) :: &
       DP
-    type ( MeasuredValueForm ), intent ( in ), optional :: &
+    type ( QuantityForm ), intent ( in ), optional :: &
       TimeOption
     integer ( KDI ), intent ( in ), optional :: &
       CycleNumberOption
       
-    call PROGRAM_HEADER % Timer ( DP % iTimer_IO ) % Start ( )
+    type ( TimerForm ), pointer :: &
+      T_IO
+
+    T_IO  =>  PROGRAM_HEADER % Timer &
+                ( DP % iTimer_IO, 'InputOutput', Level = 1 )
+    call T_IO % Start ( )
+
     call Show ( 'Writing image', CONSOLE % INFO_1 )
     
     associate ( GIS => DP % GridImageStream )
@@ -418,7 +426,8 @@ contains
     end associate !-- GIS
     
     call Show ( DP % GridImageStream % Number, 'iImage', CONSOLE % INFO_1 )
-    call PROGRAM_HEADER % Timer ( DP % iTimer_IO ) % Stop ( )
+
+    call T_IO % Stop ( )
     
   end subroutine Write
 

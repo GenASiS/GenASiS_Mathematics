@@ -57,7 +57,108 @@ module PressurelessFluid_Form
       ApplyBoundaryConditionsReflecting, &
       ComputeRawFluxesKernel, &
       ComputeRiemannSolverInputKernel
+      
+    interface
+    
+      module subroutine ComputeConservedKernel &
+                   ( D, S_1, S_2, S_3, N, V_1, V_2, V_3, UseDevice )
+        use Basics
+        implicit none
+        real ( KDR ), dimension ( : ), intent ( inout ) :: &
+          D, &
+          S_1, S_2, S_3
+        real ( KDR ), dimension ( : ), intent ( in ) :: &
+          N, &
+          V_1, V_2, V_3
+        logical ( KDL ), intent ( in ) :: &
+          UseDevice
+      end subroutine ComputeConservedKernel
 
+      module subroutine ComputePrimitiveKernel &
+                   ( N, V_1, V_2, V_3, D, S_1, S_2, S_3, UseDevice )
+        use Basics
+        implicit none
+        real ( KDR ), dimension ( : ), intent ( inout ) :: &
+          N, &
+          V_1, V_2, V_3, &
+          D, &
+          S_1, S_2, S_3
+        logical ( KDL ), intent ( in ) :: &
+          UseDevice
+      end subroutine ComputePrimitiveKernel
+
+      module subroutine ComputeEigenspeedsKernel &
+                   ( FEP_1, FEP_2, FEP_3, FEM_1, FEM_2, FEM_3, &
+                     V_1, V_2, V_3, UseDevice )
+        use Basics
+        implicit none
+        real ( KDR ), dimension ( : ), intent ( inout ) :: &
+          FEP_1, FEP_2, FEP_3, &
+          FEM_1, FEM_2, FEM_3
+        real ( KDR ), dimension ( : ), intent ( in ) :: &
+          V_1, V_2, V_3
+        logical ( KDL ), intent ( in ) :: &
+          UseDevice
+      end subroutine ComputeEigenspeedsKernel
+
+
+      module subroutine ApplyBoundaryConditionsReflecting &
+                   ( N_E, VI_E, VJ_E, VK_E, N_I, VI_I, VJ_I, VK_I, &
+                     nB, oBE, oBI, UseDevice )
+        use Basics
+        implicit none
+        real ( KDR ), dimension ( :, :, : ), intent ( inout ) :: &
+          N_E, &
+          VI_E, VJ_E, VK_E
+        real ( KDR ), dimension ( :, :, : ), intent ( in ) :: &
+          N_I, &
+          VI_I, VJ_I, VK_I
+        integer ( KDI ), dimension ( 3 ), intent ( in ) :: &
+          nB,  & 
+          oBE, &
+          oBI
+        logical ( KDL ), intent ( in ) :: &
+          UseDevice
+      end subroutine ApplyBoundaryConditionsReflecting
+
+
+      module subroutine ComputeRawFluxesKernel &
+                   ( F_D, F_S_1, F_S_2, F_S_3, D, S_1, S_2, S_3, V_Dim, &
+                     UseDevice )
+        use Basics
+        implicit none
+        real ( KDR ), dimension ( : ), intent ( inout ) :: &
+          F_D, &
+          F_S_1, F_S_2, F_S_3
+        real ( KDR ), dimension ( : ), intent ( in ) :: &
+          D, &
+          S_1, S_2, S_3, &
+          V_Dim
+        logical ( KDL ), intent ( in ) :: &
+          UseDevice
+      end subroutine ComputeRawFluxesKernel
+
+
+      module subroutine ComputeRiemannSolverInputKernel &
+                   ( AP_I, AP_O, AM_I, AM_O, LP_I, LP_O, LM_I, LM_O, oV, iD, &
+                     UseDevice )
+        use Basics
+        implicit none
+        real ( KDR ), dimension ( :, :, : ), intent ( inout ) :: &
+          AP_I, AP_O, &
+          AM_I, AM_O
+        real ( KDR ), dimension ( :, :, : ), intent ( in ) :: &
+          LP_I, LP_O, &
+          LM_I, LM_O
+        integer ( KDI ), intent ( in ) :: &
+          oV, &
+          iD
+        logical ( KDL ), intent ( in ) :: &
+          UseDevice
+      end subroutine ComputeRiemannSolverInputKernel
+
+    end interface
+      
 contains
 
 
@@ -76,14 +177,14 @@ contains
       NameOption
     logical ( KDL ), intent ( in ), optional :: &
       ClearOption
-    type ( MeasuredValueForm ), dimension ( : ), intent ( in ), optional :: &
+    type ( QuantityForm ), dimension ( : ), intent ( in ), optional :: &
       UnitOption
     type ( Integer_1D_Form ), dimension ( : ), intent ( in ), optional ::&
       VectorIndicesOption
 
     type ( Integer_1D_Form ), dimension ( : ), allocatable :: &
       VectorIndices
-    type ( MeasuredValueForm ), dimension ( : ), allocatable :: &
+    type ( QuantityForm ), dimension ( : ), allocatable :: &
       VariableUnit
     character ( LDL ), dimension ( : ), allocatable :: &
       Variable, &
@@ -103,12 +204,21 @@ contains
   end subroutine InitializeWithMesh
 
   
-  subroutine ComputeConserved ( CF, Value )
+  subroutine ComputeConserved ( CF, Value, UseDeviceOption )
 
     class ( PressurelessFluidForm ), intent ( inout ) :: &
       CF
     real ( KDR ), dimension ( :, : ), intent ( inout ) :: &
       Value
+    logical ( KDL ), intent ( in ), optional :: &
+      UseDeviceOption
+      
+    logical ( KDL ) :: &
+      UseDevice
+      
+    UseDevice = OnDevice ( Value ( :, CF % CONSERVED_DENSITY ) )
+    if ( present ( UseDeviceOption ) ) &
+      UseDevice = UseDeviceOption
     
     call ComputeConservedKernel &
       ( Value ( :, CF % CONSERVED_DENSITY ), &
@@ -118,17 +228,26 @@ contains
         Value ( :, CF % COMOVING_DENSITY ), &
         Value ( :, CF % VELOCITY ( 1 ) ), &    
         Value ( :, CF % VELOCITY ( 2 ) ), &   
-        Value ( :, CF % VELOCITY ( 3 ) ) )    
+        Value ( :, CF % VELOCITY ( 3 ) ), UseDevice )
 
   end subroutine ComputeConserved
   
 
-  subroutine ComputePrimitive ( CF, Value )
+  subroutine ComputePrimitive ( CF, Value, UseDeviceOption )
     
     class ( PressurelessFluidForm ), intent ( inout ) :: &
       CF
     real ( KDR ), dimension ( :, : ), intent ( inout ) :: &
       Value
+    logical ( KDL ), intent ( in ), optional :: &
+      UseDeviceOption
+      
+    logical ( KDL ) :: &
+      UseDevice
+          
+    UseDevice = OnDevice ( Value ( :, CF % CONSERVED_DENSITY ) )
+    if ( present ( UseDeviceOption ) ) &
+      UseDevice = UseDeviceOption
    
     call ComputePrimitiveKernel &
            ( Value ( :, CF % COMOVING_DENSITY ), &
@@ -138,18 +257,28 @@ contains
              Value ( :, CF % CONSERVED_DENSITY ), &
              Value ( :, CF % MOMENTUM_DENSITY ( 1 ) ), &
              Value ( :, CF % MOMENTUM_DENSITY ( 2 ) ), &
-             Value ( :, CF % MOMENTUM_DENSITY ( 3 ) ) )
+             Value ( :, CF % MOMENTUM_DENSITY ( 3 ) ), &
+             UseDevice )
   
   end subroutine ComputePrimitive
   
   
-  subroutine ComputeAuxiliary ( CF, Value )
+  subroutine ComputeAuxiliary ( CF, Value, UseDeviceOption )
     
     class ( PressurelessFluidForm ), intent ( inout ) :: &
       CF
     real ( KDR ), dimension ( :, : ), intent ( inout ) :: &
       Value
-    
+    logical ( KDL ), intent ( in ), optional :: &
+      UseDeviceOption
+      
+    logical ( KDL ) :: &
+      UseDevice
+          
+    UseDevice = OnDevice ( Value ( :, CF % VELOCITY ( 1 ) ) )
+    if ( present ( UseDeviceOption ) ) &
+      UseDevice = UseDeviceOption
+   
     !-- No auxiliary variables besides eigenspeeds
 
     call ComputeEigenspeedsKernel &
@@ -161,14 +290,15 @@ contains
              Value ( :, CF % FAST_EIGENSPEED_MINUS ( 3 ) ), &
              Value ( :, CF % VELOCITY ( 1 ) ), &
              Value ( :, CF % VELOCITY ( 2 ) ), &
-             Value ( :, CF % VELOCITY ( 3 ) ) )
+             Value ( :, CF % VELOCITY ( 3 ) ), &
+             UseDevice )
     
   end subroutine ComputeAuxiliary
   
   
   subroutine ApplyBoundaryConditions &
               ( CF, ExteriorValue, InteriorValue, iDimension, iBoundary, &
-                PrimitiveOnlyOption )
+                PrimitiveOnlyOption, UseDeviceOption )
 
     class ( PressurelessFluidForm ), intent ( inout ) :: &
       CF
@@ -180,7 +310,8 @@ contains
       iDimension, &
       iBoundary
     logical ( KDL ), intent ( in ), optional :: &
-      PrimitiveOnlyOption
+      PrimitiveOnlyOption, &
+      UseDeviceOption
       
     integer ( KDI ) :: &
       jD, kD   !-- jDimension, kDimension
@@ -194,10 +325,16 @@ contains
       N_E, &
       VI_E, VJ_E, VK_E      
     logical ( KDL ) :: &
-      PrimitiveOnly
-
+      PrimitiveOnly, &
+      UseDevice
+          
+    
     PrimitiveOnly = .false.
     if ( present ( PrimitiveOnlyOption ) ) PrimitiveOnly = PrimitiveOnlyOption
+    
+    UseDevice = OnDevice ( InteriorValue ( :, CF % COMOVING_DENSITY ) )
+    if ( present ( UseDeviceOption ) ) &
+      UseDevice = UseDeviceOption
 
     associate &
       ( iD => iDimension, &
@@ -246,7 +383,9 @@ contains
       return
     case ( 'REFLECTING' )
       call ApplyBoundaryConditionsReflecting &
-             ( N_E, VI_E, VJ_E, VK_E, N_I, VI_I, VJ_I, VK_I, nB, oBE, oBI )
+             ( N_E, VI_E, VJ_E, VK_E, N_I, VI_I, VJ_I, VK_I, nB, oBE, oBI, &
+               UseDevice )
+               
     case default
       call Show &
              ( 'This boundary condition is not implemented', CONSOLE % ERROR )
@@ -257,15 +396,16 @@ contains
 
     if ( PrimitiveOnly ) return
 
-    call CF % ComputeAuxiliary ( ExteriorValue )
-    call CF % ComputeConserved ( ExteriorValue )
+    call CF % ComputeAuxiliary ( ExteriorValue, UseDeviceOption )
+    call CF % ComputeConserved ( ExteriorValue, UseDeviceOption )
 
     end associate  !-- iD, etc.
   
   end subroutine ApplyBoundaryConditions
 
 
-  subroutine ComputeRawFluxes ( CF, RawFlux, Value, iDimension )
+  subroutine ComputeRawFluxes &
+               ( CF, RawFlux, Value, iDimension, UseDeviceOption )
     
     class ( PressurelessFluidForm ), intent ( inout ) :: &
       CF
@@ -275,11 +415,19 @@ contains
       Value
     integer ( KDI ), intent ( in ) :: &
       iDimension
+    logical ( KDL ), intent ( in ), optional :: &
+      UseDeviceOption
     
     integer ( KDI ) :: &
       iDensity
     integer ( KDI ), dimension ( 3 ) :: &
       iMomentum
+    logical ( KDL ) :: &
+      UseDevice
+      
+    UseDevice = OnDevice ( Value ( :, CF % CONSERVED_DENSITY ) )
+    if ( present ( UseDeviceOption ) ) &
+      UseDevice = UseDeviceOption
       
     call Search &
            ( CF % iaConserved, CF % CONSERVED_DENSITY, iDensity )
@@ -299,13 +447,15 @@ contains
              Value ( :, CF % MOMENTUM_DENSITY ( 1 ) ), &
              Value ( :, CF % MOMENTUM_DENSITY ( 2 ) ), &
              Value ( :, CF % MOMENTUM_DENSITY ( 3 ) ), &
-             Value ( :, CF % VELOCITY ( iDimension ) ) )
+             Value ( :, CF % VELOCITY ( iDimension ) ), &
+             UseDevice )
                
   end subroutine ComputeRawFluxes
   
   
   subroutine ComputeRiemannSolverInput &
-               ( CF, Step, ValueInner, ValueOuter, iDimension )
+               ( CF, Step, ValueInner, ValueOuter, iDimension, &
+                 UseDeviceOption )
     
     class ( PressurelessFluidForm ), intent ( inout ) :: &
       CF
@@ -316,13 +466,17 @@ contains
       ValueOuter
     integer ( KDI ), intent ( in ) :: &
       iDimension
+    logical ( KDL ), intent ( in ), optional :: &
+      UseDeviceOption
     
     real ( KDR ), dimension ( :, :, : ), pointer :: &
       AP_I, AP_O, &
       AM_I, AM_O, &
       LP_I, LP_O, &
       LM_I, LM_O
-
+    logical ( KDL ) :: &
+      UseDevice
+      
     select type ( S => Step )
     type is ( ConservationLawStepForm )
 
@@ -342,10 +496,16 @@ contains
            ( ValueInner ( :, CF % FAST_EIGENSPEED_MINUS ( iDimension ) ), LM_I )
     call CF % DistributedMesh % SetVariablePointer &
            ( ValueOuter ( :, CF % FAST_EIGENSPEED_MINUS ( iDimension ) ), LM_O )
+           
+    UseDevice = OnDevice ( AP_I )
+    if ( present ( UseDeviceOption ) ) &
+      UseDevice = UseDeviceOption
 
     call ComputeRiemannSolverInputKernel &
-           ( AP_I, AP_O, AM_I, AM_O, LP_I, LP_O, LM_I, LM_O, iDimension )
-
+           ( AP_I, AP_O, AM_I, AM_O, LP_I, LP_O, LM_I, LM_O, &
+             CF % DistributedMesh % nGhostLayers ( iDimension ), iDimension, &
+             UseDevice )
+             
     end select !-- S
       
   end subroutine ComputeRiemannSolverInput
@@ -358,22 +518,24 @@ contains
       PF
     logical ( KDL ), intent ( in ), optional :: &
       UnitsOnlyOption
-    type ( MeasuredValueForm ), dimension ( 3 ), intent ( in ), optional :: &
+    type ( QuantityForm ), dimension ( 3 ), intent ( in ), optional :: &
       VelocityUnitOption
-    type ( MeasuredValueForm ), intent ( in ), optional :: &
+    type ( QuantityForm ), intent ( in ), optional :: &
       DensityUnitOption
 
     integer ( KDI ) :: &
       iD  !-- iDimension
     type ( Integer_1D_Form ), dimension ( 1 ) :: &
       VectorIndices
-    type ( MeasuredValueForm ) :: &
+    type ( QuantityForm ) :: &
       DensityUnit
-    type ( MeasuredValueForm ), dimension ( 3 ) :: &
+    type ( QuantityForm ), dimension ( 3 ) :: &
       VelocityUnit
     logical ( KDL ) :: &
       UnitsOnly
 
+    call PF % SetOutputTemplate ( )
+    
     DensityUnit = UNIT % IDENTITY
     if ( present ( DensityUnitOption ) ) DensityUnit = DensityUnitOption
 
@@ -401,8 +563,9 @@ contains
            ( PF, iaSelectedOption = [ PF % COMOVING_DENSITY, PF % VELOCITY ], &
              VectorOption = [ 'Velocity                       ' ], &
              VectorIndicesOption = VectorIndices )
-
-    call PF % DistributedMesh % SetImage ( PF % Output, PROGRAM_HEADER % Name )
+             
+    call PF % DistributedMesh % SetImage &
+         ( Output = PF % Output, Name = PROGRAM_HEADER % Name )
 
   end subroutine SetOutputPressureless
 
@@ -432,7 +595,7 @@ contains
     character ( LDL ), dimension ( : ), allocatable, intent ( out ) :: &
       Vector, &
       Variable
-    type ( MeasuredValueForm ), dimension ( : ), allocatable, &
+    type ( QuantityForm ), dimension ( : ), allocatable, &
       intent ( out ) :: &
         VariableUnit
     !-- FIXME: intent(out) here caused ICE with Intel Compiler 15
@@ -447,7 +610,7 @@ contains
       VariableOption
     character ( * ), intent ( in ), optional :: &
       NameOption
-    type ( MeasuredValueForm ), dimension ( : ), intent ( in ), optional :: &
+    type ( QuantityForm ), dimension ( : ), intent ( in ), optional :: &
       VariableUnitOption
     type ( Integer_1D_Form ), dimension ( : ), intent ( in ), optional :: &
       VectorIndicesOption
@@ -560,154 +723,6 @@ contains
       = [ PF % CONSERVED_DENSITY, PF % MOMENTUM_DENSITY ]
     
   end subroutine InitializeBasics
-
-
-  subroutine ComputeConservedKernel ( D, S_1, S_2, S_3, N, V_1, V_2, V_3 )
-
-    real ( KDR ), dimension ( : ), intent ( inout ) :: &
-      D, &
-      S_1, S_2, S_3
-    real ( KDR ), dimension ( : ), intent ( in ) :: &
-      N, &
-      V_1, V_2, V_3
-
-    D   = N
-    S_1 = N * V_1
-    S_2 = N * V_2
-    S_3 = N * V_3
-
-  end subroutine ComputeConservedKernel
-
-
-  subroutine ComputePrimitiveKernel ( N, V_1, V_2, V_3, D, S_1, S_2, S_3 )
-
-    real ( KDR ), dimension ( : ), intent ( inout ) :: &
-      N, &
-      V_1, V_2, V_3, &
-      D, &
-      S_1, S_2, S_3
-
-    N = D
-
-    where ( N > 0.0_KDR )
-      V_1 = S_1 / N 
-      V_2 = S_2 / N
-      V_3 = S_3 / N
-    elsewhere
-      N   = 0.0_KDR
-      V_1 = 0.0_KDR
-      V_2 = 0.0_KDR
-      V_3 = 0.0_KDR
-      D   = 0.0_KDR
-      S_1 = 0.0_KDR
-      S_2 = 0.0_KDR
-      S_3 = 0.0_KDR
-    end where
-
-  end subroutine ComputePrimitiveKernel
-
-
-  subroutine ComputeEigenspeedsKernel &
-               ( FEP_1, FEP_2, FEP_3, FEM_1, FEM_2, FEM_3, V_1, V_2, V_3 )
-
-    real ( KDR ), dimension ( : ), intent ( inout ) :: &
-      FEP_1, FEP_2, FEP_3, &
-      FEM_1, FEM_2, FEM_3
-    real ( KDR ), dimension ( : ), intent ( in ) :: &
-      V_1, V_2, V_3
-
-    FEP_1 = V_1
-    FEP_2 = V_2
-    FEP_3 = V_3
-    FEM_1 = V_1
-    FEM_2 = V_2
-    FEM_3 = V_3
-
-  end subroutine ComputeEigenspeedsKernel
-
-
-  subroutine ApplyBoundaryConditionsReflecting &
-               ( N_E, VI_E, VJ_E, VK_E, N_I, VI_I, VJ_I, VK_I, nB, oBE, oBI )
-
-    real ( KDR ), dimension ( :, :, : ), intent ( inout ) :: &
-      N_E, &
-      VI_E, VJ_E, VK_E
-    real ( KDR ), dimension ( :, :, : ), intent ( in ) :: &
-      N_I, &
-      VI_I, VJ_I, VK_I
-    integer ( KDI ), dimension ( 3 ), intent ( in ) :: &
-      nB,  & 
-      oBE, &
-      oBI
-
-    N_E ( oBE ( 1 ) + 1 : oBE ( 1 ) + nB ( 1 ), &
-          oBE ( 2 ) + 1 : oBE ( 2 ) + nB ( 2 ), &
-          oBE ( 3 ) + 1 : oBE ( 3 ) + nB ( 3 ) ) &
-      = N_I ( oBI ( 1 ) + 1 : oBI ( 1 ) + nB ( 1 ), &
-              oBI ( 2 ) + 1 : oBI ( 2 ) + nB ( 2 ), &
-              oBI ( 3 ) + 1 : oBI ( 3 ) + nB ( 3 ) )
-
-    VI_E ( oBE ( 1 ) + 1 : oBE ( 1 ) + nB ( 1 ), &
-           oBE ( 2 ) + 1 : oBE ( 2 ) + nB ( 2 ), &
-           oBE ( 3 ) + 1 : oBE ( 3 ) + nB ( 3 ) ) &
-      = - VI_I ( oBI ( 1 ) + 1 : oBI ( 1 ) + nB ( 1 ), &
-                 oBI ( 2 ) + 1 : oBI ( 2 ) + nB ( 2 ), &
-                 oBI ( 3 ) + 1 : oBI ( 3 ) + nB ( 3 ) )
-
-    VJ_E ( oBE ( 1 ) + 1 : oBE ( 1 ) + nB ( 1 ), &
-           oBE ( 2 ) + 1 : oBE ( 2 ) + nB ( 2 ), &
-           oBE ( 3 ) + 1 : oBE ( 3 ) + nB ( 3 ) ) &
-      = VJ_I ( oBI ( 1 ) + 1 : oBI ( 1 ) + nB ( 1 ), &
-               oBI ( 2 ) + 1 : oBI ( 2 ) + nB ( 2 ), &
-               oBI ( 3 ) + 1 : oBI ( 3 ) + nB ( 3 ) )
-
-    VK_E ( oBE ( 1 ) + 1 : oBE ( 1 ) + nB ( 1 ), &
-           oBE ( 2 ) + 1 : oBE ( 2 ) + nB ( 2 ), &
-           oBE ( 3 ) + 1 : oBE ( 3 ) + nB ( 3 ) ) &
-      = VK_I ( oBI ( 1 ) + 1 : oBI ( 1 ) + nB ( 1 ), &
-               oBI ( 2 ) + 1 : oBI ( 2 ) + nB ( 2 ), &
-               oBI ( 3 ) + 1 : oBI ( 3 ) + nB ( 3 ) )
-
-  end subroutine ApplyBoundaryConditionsReflecting
-
-
-  subroutine ComputeRawFluxesKernel &
-               ( F_D, F_S_1, F_S_2, F_S_3, D, S_1, S_2, S_3, V_Dim )
-
-    real ( KDR ), dimension ( : ), intent ( inout ) :: &
-      F_D, &
-      F_S_1, F_S_2, F_S_3
-    real ( KDR ), dimension ( : ), intent ( in ) :: &
-      D, &
-      S_1, S_2, S_3, &
-      V_Dim
-
-    F_D   = D   * V_Dim
-    F_S_1 = S_1 * V_Dim
-    F_S_2 = S_2 * V_Dim
-    F_S_3 = S_3 * V_Dim
-
-  end subroutine ComputeRawFluxesKernel
-
-
-  subroutine ComputeRiemannSolverInputKernel &
-               ( AP_I, AP_O, AM_I, AM_O, LP_I, LP_O, LM_I, LM_O, iD )
-
-    real ( KDR ), dimension ( :, :, : ), intent ( inout ) :: &
-      AP_I, AP_O, &
-      AM_I, AM_O
-    real ( KDR ), dimension ( :, :, : ), intent ( in ) :: &
-      LP_I, LP_O, &
-      LM_I, LM_O
-    integer ( KDI ), intent ( in ) :: &
-      iD
-
-    AP_I = max ( 0.0_KDR, + cshift ( LP_O, shift = -1, dim = iD ), + LP_I )
-    AP_O = max ( 0.0_KDR, + LP_O, + cshift ( LP_I, shift = +1, dim = iD ) )
-    AM_I = max ( 0.0_KDR, - cshift ( LM_O, shift = -1, dim = iD ), - LM_I )
-    AM_O = max ( 0.0_KDR, - LM_O, - cshift ( LM_I, shift = +1, dim = iD ) )
-
-  end subroutine ComputeRiemannSolverInputKernel
 
 
 end module PressurelessFluid_Form
